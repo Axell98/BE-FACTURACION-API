@@ -5,10 +5,9 @@ namespace App\Models;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
-use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, HasRoles;
@@ -16,32 +15,30 @@ class User extends Authenticatable implements JWTSubject
     protected $table = 'usuario';
 
     protected $fillable = [
-        'name',
-        'email',
+        'usuario',
         'password',
+        'nombre',
+        'tipo_doc',
+        'nume_doc',
+        'celular',
+        'direccion',
+        'foto_url',
+        'activo',
+        'last_login'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
-            'password' => 'hashed',
+            'password' => 'hashed'
         ];
     }
+
+    public function getUser($id) {}
 
     public function getJWTIdentifier()
     {
@@ -50,9 +47,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims()
     {
-        return [
-            'role' => $this->role,
-        ];
+        return [];
     }
 
     public function role()

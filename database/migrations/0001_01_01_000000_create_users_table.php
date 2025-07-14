@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -16,24 +15,18 @@ return new class extends Migration
             $table->id();
             $table->string('usuario', 15)->unique();
             $table->string('password', 255);
-            $table->string('nombre', 150);
+            $table->string('nombre', 100);
+            $table->string('tipo_doc', 10)->nullable();
+            $table->string('nume_doc', 50)->nullable();
             $table->string('celular', 20)->nullable();
-            $table->string('email', 150)->nullable();
-            $table->string('direccion', 20)->nullable();
-            $table->string('avatar', 20)->nullable();
+            $table->string('email', 120)->nullable();
+            $table->string('direccion', 255)->nullable();
+            $table->string('foto_url', 255)->nullable();
             $table->boolean('activo')->default(1)->nullable();
             $table->timestamp('last_login')->nullable();
             $table->timestamps();
             $table->engine('InnoDB');
         });
-
-        DB::table('usuario')->insert([
-            'usuario'     => env('DEFAULT_ADMIN'),
-            'password'    => bcrypt(env('DEFAULT_ADMIN_PASSWORD')),
-            'nombre'      => 'Super Administrador',
-            'activo'      => true,
-            'created_at'  => now(),
-        ]);
     }
 
     /**
@@ -41,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('usuario');
     }
 };
