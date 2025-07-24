@@ -34,7 +34,7 @@ class User extends Authenticatable implements JWTSubject
     protected function casts(): array
     {
         return [
-            'password' => 'hashed'
+            'password' => 'hashed',
         ];
     }
 

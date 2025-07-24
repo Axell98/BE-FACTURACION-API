@@ -18,7 +18,7 @@ class AuthController extends Controller
                 'password' => 'required|string',
             ]);
             if (!$token = JWTAuth::attempt($credentials)) {
-                return responseError('Invalid credentials', 401);
+                return responseError('Incorrect username or password.', 401);
             }
             $expiresIn = JWTAuth::factory()->getTTL();
             $expirationDate = now()->addMinutes($expiresIn)->timestamp;
