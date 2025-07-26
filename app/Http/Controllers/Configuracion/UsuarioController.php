@@ -9,7 +9,11 @@ use Illuminate\Http\Request;
 
 class UsuarioController extends Controller
 {
-    public function index(Request $request) {}
+    public function index(Request $request)
+    {
+        $data = User::all();
+        return responseSuccess('Data found', $data);
+    }
 
     public function store(UserRequest $request)
     {
