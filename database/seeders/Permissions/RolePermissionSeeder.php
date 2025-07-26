@@ -2,19 +2,18 @@
 
 namespace Database\Seeders\Permissions;
 
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Seeder;
 
-class UserPermissionSeeder extends Seeder
+class RolePermissionSeeder extends Seeder
 {
     public function run(): void
     {
         $permissions = [
-            'user.view',
-            'user.create',
-            'user.edit',
-            'user.delete'
+            'role.view',
+            'role.create',
+            'role.edit',
+            'role.delete'
         ];
         foreach ($permissions as $permission) {
             Permission::firstOrCreate([

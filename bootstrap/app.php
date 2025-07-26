@@ -22,4 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
             }
             return null;
         });
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return responseError('Unauthorized', 401);
+            }
+        });
     })->create();
