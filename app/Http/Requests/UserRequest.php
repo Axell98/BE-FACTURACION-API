@@ -25,7 +25,10 @@ class UserRequest extends FormRequest
             'usuario'  => 'required|string',
             'password' => 'required|string',
             'nombre'   => 'required|string',
-            'role'     => 'required|string'
+            'role'     => 'required|string',
+            'tipo_doc' => 'present|nullable|string',
+            'nume_doc' => 'present|nullable|string',
+            'celular'  => 'present|nullable|string'
         ];
     }
 }

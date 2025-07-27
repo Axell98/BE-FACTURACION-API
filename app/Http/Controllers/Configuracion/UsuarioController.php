@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Configuracion;
 
 use App\Models\User;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class UsuarioController extends Controller
@@ -28,5 +28,23 @@ class UsuarioController extends Controller
         ]);
         $user->assignRole($request->role);
         return responseSuccess('Created data', null, 201);
+    }
+
+    public function update(UserRequest $request, $id)
+    {
+        User::where('id', $id)->update([
+            'nombre'    => $request->nombre,
+            'tipo_doc'  => $request->input('tipo_doc'),
+            'nume_doc'  => $request->input('nume_doc'),
+            'celular'   => $request->input('celular'),
+            'direccion' => $request->input('direccion')
+        ]);
+        return responseSuccess('Updated data', null, 200);
+    }
+
+    public function remove($id)
+    {
+        User::where('id', $id)->delete();
+        return responseSuccess('Deleted data', null, 200);
     }
 }

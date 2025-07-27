@@ -14,7 +14,7 @@ class AuthController extends Controller
     {
         try {
             $credentials = $request->validate([
-                'usuario' => 'required|string|max:10',
+                'usuario'  => 'required|string|max:10',
                 'password' => 'required|string',
             ]);
             if (!$token = JWTAuth::attempt($credentials)) {
@@ -50,19 +50,6 @@ class AuthController extends Controller
         }
     }
 
-    public function logout()
-    {
-        try {
-            if (!$token = JWTAuth::getToken()) {
-                return responseError('No token provided.', 401);
-            }
-            JWTAuth::invalidate($token);
-            return responseSuccess('Successfully logged out.');
-        } catch (JWTException $ex) {
-            return responseError('Failed to invalidate token.', 500, $ex->getMessage());
-        }
-    }
-
     public function profile()
     {
         try {
@@ -73,6 +60,19 @@ class AuthController extends Controller
             return responseSuccess('User data found.', $userData);
         } catch (JWTException $ex) {
             return responseError('Invalid token.', 500, $ex->getMessage());
+        }
+    }
+
+    public function logout()
+    {
+        try {
+            if (!$token = JWTAuth::getToken()) {
+                return responseError('No token provided.', 401);
+            }
+            JWTAuth::invalidate($token);
+            return responseSuccess('Successfully logged out.');
+        } catch (JWTException $ex) {
+            return responseError('Failed to invalidate token.', 500, $ex->getMessage());
         }
     }
 }

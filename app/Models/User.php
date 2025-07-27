@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Support\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,6 +15,7 @@ class User extends Authenticatable implements JWTSubject
     use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
     protected $table = 'usuario';
+    protected $primaryKey = 'id';
     protected $guard_name = 'api';
 
     protected $fillable = [
@@ -28,7 +28,6 @@ class User extends Authenticatable implements JWTSubject
         'direccion',
         'foto_url',
         'activo',
-        'last_login'
     ];
 
     protected $hidden = [
