@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // ⚡ Permitir que el super-admin haga todo sin importar los permisos asignados
+        // Permitir que el super-admin haga todo sin importar los permisos asignados
         Gate::before(function ($user, $ability) {
             return $user->hasRole('super-admin') ? true : null;
         });

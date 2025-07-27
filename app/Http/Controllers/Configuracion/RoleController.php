@@ -16,6 +16,20 @@ class RoleController extends Controller
         return responseSuccess('Data found', $data);
     }
 
+    public function search($id)
+    {
+        $role = Role::with('permissions')->find($id);
+        if (!$role) {
+            return responseError('Rol no encontrado.', 404);
+        }
+        return responseSuccess('Datos encontrados.', [
+            'id' => $role->id,
+            'name' => $role->name,
+            'display_name' => $role->display_name,
+            'permissions' => $role->permissions->pluck('name')
+        ]);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

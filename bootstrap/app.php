@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -20,20 +21,24 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->renderable(function (Throwable $e, Request $request) {
-            if (app()->environment('production')) {
-                return responseError('An error has occurred.');
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return responseError($e->getMessage(), Response::HTTP_NOT_FOUND);
             }
-            return null;
         });
         $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException $e, Request $request) {
             if ($request->is('api/*')) {
-                return responseError('Unauthorized', 401);
+                return responseError('Unauthorized', Response::HTTP_UNAUTHORIZED);
             }
         });
         $exceptions->render(function (\Spatie\Permission\Exceptions\UnauthorizedException $e, Request $request) {
             if ($request->is('api/*')) {
-                return responseError('No tienes permiso para realizar esta acción', 403);
+                return responseError('No tienes permiso para realizar esta acción', Response::HTTP_FORBIDDEN);
+            }
+        });
+        $exceptions->render(function (\Illuminate\Database\QueryException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return responseError('Error in database', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
             }
         });
     })->create();

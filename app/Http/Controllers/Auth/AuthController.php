@@ -25,6 +25,7 @@ class AuthController extends Controller
             return responseSuccess('Authenticated user.', [
                 'expiresIn'   => $expirationDate,
                 'accessToken' => $token,
+                'userData'    => $this->getUserData(JWTAuth::user())
             ]);
         } catch (JWTException $ex) {
             return responseError('Could not create token.', 500, $ex->getMessage());
@@ -56,7 +57,7 @@ class AuthController extends Controller
             if (!$user = JWTAuth::parseToken()->authenticate()) {
                 return responseError('User not found.', 404);
             }
-            $userData = $user;
+            $userData = $this->getUserData($user);
             return responseSuccess('User data found.', $userData);
         } catch (JWTException $ex) {
             return responseError('Invalid token.', 500, $ex->getMessage());
@@ -74,5 +75,19 @@ class AuthController extends Controller
         } catch (JWTException $ex) {
             return responseError('Failed to invalidate token.', 500, $ex->getMessage());
         }
+    }
+
+    private function getUserData($user)
+    {
+        $role = $user->roles->first();
+        $userData = $user->toArray();
+        if ($role) {
+            $userData['roles'] = [
+                'id' => $role->id,
+                'name' => $role->name,
+                'display_name' => $role->display_name,
+            ];
+        }
+        return $userData;
     }
 }

@@ -4,15 +4,13 @@ namespace App\Models;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable, HasRoles, SoftDeletes;
+    use HasRoles, SoftDeletes;
 
     protected $table = 'usuario';
     protected $primaryKey = 'id';
@@ -27,11 +25,14 @@ class User extends Authenticatable implements JWTSubject
         'celular',
         'direccion',
         'foto_url',
+        'empresa_acceso',
+        'empresa_actual',
         'activo',
     ];
 
     protected $hidden = [
         'password',
+        'deleted_at'
     ];
 
     protected function casts(): array
