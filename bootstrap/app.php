@@ -28,17 +28,17 @@ return Application::configure(basePath: dirname(__DIR__))
         });
         $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException $e, Request $request) {
             if ($request->is('api/*')) {
-                return responseError('Unauthorized', Response::HTTP_UNAUTHORIZED);
+                return responseError('Unauthorized.', Response::HTTP_UNAUTHORIZED);
             }
         });
         $exceptions->render(function (\Spatie\Permission\Exceptions\UnauthorizedException $e, Request $request) {
             if ($request->is('api/*')) {
-                return responseError('No tienes permiso para realizar esta acción', Response::HTTP_FORBIDDEN);
+                return responseError('You do not have permission for this action.', Response::HTTP_FORBIDDEN);
             }
         });
         $exceptions->render(function (\Illuminate\Database\QueryException $e, Request $request) {
             if ($request->is('api/*')) {
-                return responseError('Error in database', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+                return responseError('Error in database.', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
             }
         });
     })->create();

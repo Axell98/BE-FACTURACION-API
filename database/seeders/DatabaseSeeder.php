@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
             Permissions\UserPermissionSeeder::class,
             Permissions\RolePermissionSeeder::class,
             SuperAdminSeeder::class,
+            UbigeoSeeder::class,
+            PaisesSeeder::class
         ]);
     }
 }
