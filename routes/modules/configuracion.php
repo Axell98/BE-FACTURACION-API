@@ -17,3 +17,13 @@ Route::prefix('usuarios')->group(function () {
     Route::put('{id}', [Configuracion\UsuarioController::class, 'update'])->whereNumber('id')->middleware('permission:user.edit');
     Route::delete('{id}', [Configuracion\UsuarioController::class, 'remove'])->whereNumber('id')->middleware('permission:user.delete');
 });
+
+Route::prefix('sistema')->group(function () {
+    Route::prefix('datos')->group(function () {
+        Route::get('ubigeo', [Configuracion\DatosSistemaController::class, 'ubigeo']);
+        Route::get('paises', [Configuracion\DatosSistemaController::class, 'paises']);
+    });
+    Route::prefix('menu')->group(function () {
+        Route::get('', [Configuracion\MenuController::class, 'index']);
+    });
+});

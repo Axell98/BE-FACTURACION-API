@@ -83,11 +83,11 @@ class AuthController extends Controller
         $userData = $user->toArray();
         if ($role) {
             $userData['roles'] = [
-                'id' => $role->id,
                 'name' => $role->name,
                 'display_name' => $role->display_name,
             ];
         }
+        $userData['permissions'] = $user->getAllPermissions()->pluck('name');
         return $userData;
     }
 }
