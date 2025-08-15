@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             Permissions\UserPermissionSeeder::class,
             Permissions\RolePermissionSeeder::class,
+            Permissions\EmpresaPermissionSeeder::class,
             SuperAdminSeeder::class,
             UbigeoSeeder::class,
             PaisesSeeder::class

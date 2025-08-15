@@ -12,8 +12,9 @@ class RoleController extends Controller
 
     public function index()
     {
-        $data = Role::where('name', '!=', 'super-admin')->get();
-        return responseSuccess('Data found', $data);
+        $data = Role::where('name', '!=', 'super-admin')->get()->toArray();
+        $message = !empty($data) ? 'Data found' : 'Data not found';
+        return responseSuccess($message, $data);
     }
 
     public function search($id)

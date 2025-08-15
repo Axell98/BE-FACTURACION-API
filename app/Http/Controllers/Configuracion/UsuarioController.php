@@ -11,8 +11,13 @@ class UsuarioController extends Controller
 {
     public function index(Request $request)
     {
-        $data = User::all();
-        return responseSuccess('Data found', $data);
+        $params = $request->validate([
+            'rol' => 'sometimes|nullable|string',
+            'estado' => 'sometimes|nullable|string|in:true,false'
+        ]);
+        $data = User::listarUsuarios($params);
+        $message = !empty($data) ? 'Data found' : 'Data not found';
+        return responseSuccess($message, $data);
     }
 
     public function store(UserRequest $request)

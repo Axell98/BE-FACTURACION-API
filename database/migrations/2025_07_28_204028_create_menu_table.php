@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->integer('id_pad')->nullable();
             $table->string('nombre', 150);
-            $table->string('url', 150);
-            $table->string('icono', 100);
+            $table->string('url', 150)->nullable();
+            $table->string('icono', 100)->nullable();
             $table->boolean('activo')->default(1)->nullable();
             $table->integer('orden')->nullable();
             $table->engine('InnoDB');

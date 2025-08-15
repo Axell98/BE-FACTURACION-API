@@ -25,5 +25,6 @@ Route::prefix('sistema')->group(function () {
     });
     Route::prefix('menu')->group(function () {
         Route::get('', [Configuracion\MenuController::class, 'index']);
+        Route::get('user', [Configuracion\MenuController::class, 'user']);
     });
 });

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('name', 255);
             $table->string('guard_name', 50);
+            $table->integer('menu_id')->nullable();
             $table->timestamps();
             $table->unique(['name', 'guard_name']);
             $table->engine('InnoDB');

@@ -39,6 +39,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return [
             'password' => 'hashed',
+            'activo' => 'boolean'
         ];
     }
 
@@ -47,7 +48,30 @@ class User extends Authenticatable implements JWTSubject
         return $date->format('Y-m-d H:i:s');
     }
 
-    public function getUser($id) {}
+    public static function listarUsuarios(array $params)
+    {
+        $query = self::with('roles:id,name,display_name');
+        if (isset($params['estado'])) {
+            $query->where('activo', filter_var($params['estado'], FILTER_VALIDATE_BOOLEAN));
+        }
+        if (isset($params['rol'])) {
+            $query->whereHas('roles', function ($query) use ($params) {
+                $query->where('name', $params['rol']);
+            });
+        }
+        $result = $query->get()->map(function ($user) {
+            $data = $user->toArray();
+            $data['roles'] = $user->roles->map(function ($role) {
+                return [
+                    'id' => $role->id,
+                    'name' => $role->name,
+                    'display_name' => $role->display_name,
+                ];
+            })->first();
+            return $data;
+        });
+        return $result;
+    }
 
     public function getJWTIdentifier()
     {
