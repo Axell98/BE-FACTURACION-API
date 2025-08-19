@@ -5,6 +5,7 @@ use Illuminate\Http\Response;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -34,6 +35,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (\Spatie\Permission\Exceptions\UnauthorizedException $e, Request $request) {
             if ($request->is('api/*')) {
                 return responseError('You do not have permission for this action.', Response::HTTP_FORBIDDEN);
+            }
+        });
+        $exceptions->render(function (ValidationException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return responseError($e->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY, $e->errors());
             }
         });
         $exceptions->render(function (\Illuminate\Database\QueryException $e, Request $request) {

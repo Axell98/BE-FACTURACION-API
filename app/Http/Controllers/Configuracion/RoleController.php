@@ -35,11 +35,13 @@ class RoleController extends Controller
     {
         $request->validate([
             'nombre'   => 'required|string',
-            'permisos' => 'array|exists:permissions,name'
+            'permisos' => 'array',
+            'permisos.*' => 'string|exists:permissions,name'
         ]);
         $newRole = Role::create([
             'name' => Str::slug($request->nombre),
-            'display_name' => $request->nombre
+            'display_name' => $request->nombre,
+            'guard_name' => 'api'
         ]);
         if ($request->has('permisos')) {
             $newRole->syncPermissions($request->permisos);

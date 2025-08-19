@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Menu extends Model
 {
-    protected $table = 'menu';
+    protected $table = 'menus';
     protected $primaryKey = 'id';
     public $incrementing = false;
     public $timestamps = false;
@@ -19,18 +19,31 @@ class Menu extends Model
         ];
     }
 
-    public static function userMenu($role)
+    public static function userMenu($role, array $permissions)
     {
-        $query = self::select(['m.*'])
-            ->from('menu as m')
-            ->whereRaw('m.activo = true')
-            ->orderBy('m.orden');
+        $query = self::select([
+            'm.id',
+            'm.id_pad',
+            'm.nombre',
+            'm.url',
+            'm.icono',
+            'm.activo',
+            'm.orden'
+        ])
+            ->from('menus as m')
+            ->whereRaw('m.activo = true');
         if (!is_super_admin()) {
-            $query->join('menu_role as mr', function ($join) use ($role) {
-                $join->on('mr.id_menu', '=', 'm.id')
-                    ->on('mr.id_role', '=', DB::raw($role));
+            $query->where(function ($q) use ($permissions) {
+                $q->whereIn('m.permission_name', $permissions)
+                    ->orWhereIn('m.id', function ($subQuery) use ($permissions) {
+                        $subQuery->select('id_pad')
+                            ->from('menus')
+                            ->whereIn('permission_name', $permissions)
+                            ->whereNotNull('id_pad');
+                    });
             });
         }
+        $query->orderBy('m.orden');
         $result = self::reformatMenu($query->get());
         return $result;
     }

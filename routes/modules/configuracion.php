@@ -12,10 +12,10 @@ Route::prefix('roles')->group(function () {
 });
 
 Route::prefix('usuarios')->group(function () {
-    Route::get('', [Configuracion\UsuarioController::class, 'index'])->middleware('permission:user.view');
-    Route::post('', [Configuracion\UsuarioController::class, 'store'])->middleware('permission:user.create');
-    Route::put('{id}', [Configuracion\UsuarioController::class, 'update'])->whereNumber('id')->middleware('permission:user.edit');
-    Route::delete('{id}', [Configuracion\UsuarioController::class, 'remove'])->whereNumber('id')->middleware('permission:user.delete');
+    Route::get('', [Configuracion\UsuarioController::class, 'index'])->middleware('permission:usuario.view');
+    Route::post('', [Configuracion\UsuarioController::class, 'store'])->middleware('permission:usuario.create');
+    Route::put('{id}', [Configuracion\UsuarioController::class, 'update'])->whereNumber('id')->middleware('permission:usuario.edit');
+    Route::delete('{id}', [Configuracion\UsuarioController::class, 'remove'])->whereNumber('id')->middleware('permission:usuario.delete');
 });
 
 Route::prefix('sistema')->group(function () {
