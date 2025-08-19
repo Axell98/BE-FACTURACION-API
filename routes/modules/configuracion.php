@@ -27,4 +27,5 @@ Route::prefix('sistema')->group(function () {
         Route::get('', [Configuracion\MenuController::class, 'index']);
         Route::get('user', [Configuracion\MenuController::class, 'user']);
     });
+    Route::get('permisos', [Configuracion\DatosSistemaController::class, 'permisos']);
 });

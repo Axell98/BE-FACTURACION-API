@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Configuracion;
 use App\Http\Controllers\Controller;
 use App\Models\DatosSistema;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 
 class DatosSistemaController extends Controller
 {
@@ -26,6 +27,11 @@ class DatosSistemaController extends Controller
     public function paises()
     {
         $data = DatosSistema::getPaises();
+        return responseSuccess('Data found', $data);
+    }
+
+    public function permisos() {
+        $data = Permission::all();
         return responseSuccess('Data found', $data);
     }
 }

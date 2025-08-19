@@ -11,14 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menu', function (Blueprint $table) {
+        Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_pad')->nullable();
+            $table->foreignId('id_pad')
+                ->nullable()
+                ->constrained('menus')
+                ->onDelete('cascade');
             $table->string('nombre', 150);
             $table->string('url', 150)->nullable();
             $table->string('icono', 100)->nullable();
-            $table->boolean('activo')->default(1)->nullable();
+            $table->boolean('activo')->default(true)->nullable();
             $table->integer('orden')->nullable();
+            $table->string('permission_name')->nullable();
             $table->engine('InnoDB');
         });
     }

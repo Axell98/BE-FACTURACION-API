@@ -24,8 +24,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('name', 255);
             $table->string('guard_name', 50);
-            $table->integer('menu_id')->nullable();
-            $table->timestamps();
+            $table->string('display_name', 150)->nullable();
             $table->unique(['name', 'guard_name']);
             $table->engine('InnoDB');
         });
@@ -38,7 +37,7 @@ return new class extends Migration
             }
             $table->string('name', 255);
             $table->string('guard_name', 50);
-            $table->string('display_name', 255)->nullable();
+            $table->string('display_name', 150)->nullable();
             $table->timestamps();
             if ($teams || config('permission.testing')) {
                 $table->unique([$columnNames['team_foreign_key'], 'name', 'guard_name']);
