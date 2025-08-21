@@ -15,7 +15,7 @@ class UsuarioController extends Controller
             'rol' => 'sometimes|nullable|string',
             'estado' => 'sometimes|nullable|string|in:true,false'
         ]);
-        $data = User::listarUsuarios($params);
+        $data = User::listUsers($params);
         $message = !empty($data) ? 'Data found' : 'Data not found';
         return responseSuccess($message, $data);
     }

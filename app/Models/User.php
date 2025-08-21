@@ -48,7 +48,7 @@ class User extends Authenticatable implements JWTSubject
         return $date->format('Y-m-d H:i:s');
     }
 
-    public static function listarUsuarios(array $params)
+    public static function listUsers(array $params)
     {
         $query = self::with('roles:id,name,display_name');
         if (isset($params['estado'])) {
