@@ -23,7 +23,6 @@ class UserRequest extends FormRequest
     {
         return [
             'usuario'  => 'required|string',
-            'password' => 'required|string',
             'nombre'   => 'required|string',
             'role'     => 'required|string|exists:roles,name',
             'tipo_doc' => 'present|nullable|string',

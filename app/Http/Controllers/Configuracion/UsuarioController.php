@@ -6,6 +6,9 @@ use App\Models\User;
 use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class UsuarioController extends Controller
 {
@@ -51,5 +54,52 @@ class UsuarioController extends Controller
     {
         User::where('id', $id)->delete();
         return responseSuccess('Deleted data', null, 200);
+    }
+
+    public function photoUpload(Request $request)
+    {
+        $data = $request->validate([
+            'usuario' => 'required|string',
+            'archivo' => 'required|file|mimes:png,jpg,jpeg'
+        ]);
+        $fileUpload = $data['archivo'];
+        $fileName = $data['usuario'] . '.' . $fileUpload->extension();
+        $folderName = "/users/foto";
+        if (!Storage::disk('public')->exists($folderName)) {
+            Storage::disk('public')->makeDirectory($folderName);
+        }
+        $fileUpload->storeAs($folderName, $fileName, 'public');
+        $fileURL = Storage::url($folderName, '/' . $fileName);
+        return responseSuccess('File uploaded');
+    }
+
+    public function deletePhoto($userCod)
+    {
+        $userData = User::select()->where('id')->first();
+        if ($userData && !empty($userData['photo'])) {
+            $fileName = basename($userData['photo']);
+            $filePath = "/users/foto/" . $fileName;
+            if (Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
+            }
+            User::where('usuario', $userCod)->update(['photo' => null]);
+            return responseSuccess('Deleted successfull');
+        }
+        return responseError('Fail, the file was not found', 404);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed'
+        ]);
+        $userData = JWTAuth::user();
+        if (!Hash::check($request->current_password, $userData->password)) {
+            return responseError('La contraseña actual es incorrecta');
+        };
+        $userData->password = Hash::make($request->new_password);
+        $userData->save();
+        return responseSuccess('Contraseña actualizada');
     }
 }

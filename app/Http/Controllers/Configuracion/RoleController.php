@@ -14,7 +14,12 @@ class RoleController extends Controller
     {
         $data = Role::where('name', '!=', 'super-admin')->get()->toArray();
         $message = !empty($data) ? 'Data found' : 'Data not found';
-        return responseSuccess($message, $data);
+        $formatted = array_map(function ($item) {
+            $item['created_at'] = (new \DateTime($item['created_at']))->format('Y-m-d H:i:s');
+            $item['updated_at'] = (new \DateTime($item['updated_at']))->format('Y-m-d H:i:s');
+            return $item;
+        }, $data);
+        return responseSuccess($message, $formatted);
     }
 
     public function search($id)
