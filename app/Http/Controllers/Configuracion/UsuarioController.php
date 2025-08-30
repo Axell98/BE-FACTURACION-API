@@ -64,12 +64,13 @@ class UsuarioController extends Controller
         ]);
         $fileUpload = $data['archivo'];
         $fileName = $data['usuario'] . '.' . $fileUpload->extension();
-        $folderName = "/users/foto";
+        $folderName = "users/foto";
         if (!Storage::disk('public')->exists($folderName)) {
             Storage::disk('public')->makeDirectory($folderName);
         }
         $fileUpload->storeAs($folderName, $fileName, 'public');
-        $fileURL = Storage::url($folderName, '/' . $fileName);
+        $fileURL = Storage::url($folderName . '/' . $fileName);
+        User::where('usuario', $data['usuario'])->update(['foto_url' => $fileURL]);
         return responseSuccess('File uploaded');
     }
 
@@ -82,7 +83,7 @@ class UsuarioController extends Controller
             if (Storage::disk('public')->exists($filePath)) {
                 Storage::disk('public')->delete($filePath);
             }
-            User::where('usuario', $userCod)->update(['photo' => null]);
+            User::where('usuario', $userCod)->update(['foto_url' => null]);
             return responseSuccess('Deleted successfull');
         }
         return responseError('Fail, the file was not found', 404);
@@ -96,7 +97,7 @@ class UsuarioController extends Controller
         ]);
         $userData = JWTAuth::user();
         if (!Hash::check($request->current_password, $userData->password)) {
-            return responseError('La contraseña actual es incorrecta');
+            return responseError('La contraseña actual es incorrecta', 403);
         };
         $userData->password = Hash::make($request->new_password);
         $userData->save();

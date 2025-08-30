@@ -14,8 +14,8 @@ Route::prefix('roles')->group(function () {
 Route::prefix('usuarios')->group(function () {
     Route::get('', [Configuracion\UsuarioController::class, 'index'])->middleware('permission:usuario.view');
     Route::post('', [Configuracion\UsuarioController::class, 'store'])->middleware('permission:usuario.create');
-    Route::post('photo-upload', [Configuracion\UsuarioController::class, 'photoUpload'])->middleware('permission:usuario.create');
-    Route::put('update-password', [Configuracion\UsuarioController::class, 'store'])->middleware('permission:usuario.create');
+    Route::post('upload-foto', [Configuracion\UsuarioController::class, 'photoUpload'])->middleware('permission:usuario.create');
+    Route::put('update-password/{id}', [Configuracion\UsuarioController::class, 'updatePassword'])->whereNumber('id')->middleware('permission:usuario.create');
     Route::put('{id}', [Configuracion\UsuarioController::class, 'update'])->whereNumber('id')->middleware('permission:usuario.edit');
     Route::delete('{id}', [Configuracion\UsuarioController::class, 'remove'])->whereNumber('id')->middleware('permission:usuario.delete');
 });

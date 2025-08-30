@@ -21,13 +21,21 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'usuario'  => 'required|string',
             'nombre'   => 'required|string',
+            'password' => 'required|string|min:8',
             'role'     => 'required|string|exists:roles,name',
             'tipo_doc' => 'present|nullable|string',
             'nume_doc' => 'present|nullable|string',
-            'celular'  => 'present|nullable|string'
+            'celular'  => 'present|nullable|string',
+            'direccion' => 'present|nullable|string',
+            'empresas' => 'required|array',
+            'empresas.*' => 'required|integer|min:1'
         ];
+        if ($this->isMethod('PUT')) {
+            unset($rules['password']);
+        }
+        return $rules;
     }
 }
