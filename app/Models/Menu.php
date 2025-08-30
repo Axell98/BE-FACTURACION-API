@@ -19,7 +19,7 @@ class Menu extends Model
         ];
     }
 
-    public static function userMenu($role, array $permissions)
+    public static function userMenu(array $permissions, bool $listarTodo = false)
     {
         $query = self::select([
             'm.id',
@@ -32,7 +32,7 @@ class Menu extends Model
         ])
             ->from('menus as m')
             ->whereRaw('m.activo = true');
-        if (!is_super_admin()) {
+        if (!$listarTodo && !is_super_admin()) {
             $query->where(function ($q) use ($permissions) {
                 $q->whereIn('m.permission_name', $permissions)
                     ->orWhereIn('m.id', function ($subQuery) use ($permissions) {
