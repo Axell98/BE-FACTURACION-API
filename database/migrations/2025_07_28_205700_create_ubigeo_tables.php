@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('departamento_id', 2);
             $table->foreign('departamento_id')->references('id')->on('departamentos')->onDelete('cascade');
+            $table->engine('InnoDB');
         });
 
         Schema::create('distritos', function (Blueprint $table) {
@@ -30,6 +31,7 @@ return new class extends Migration
             $table->string('provincia_id', 4);
             $table->string('departamento_id', 2);
             $table->foreign('provincia_id')->references('id')->on('provincias')->onDelete('cascade');
+            $table->engine('InnoDB');
         });
     }
 

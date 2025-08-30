@@ -29,6 +29,7 @@ return new class extends Migration
             $table->boolean('activo')->default(true);
             $table->timestamps(0);
             $table->softDeletes();
+            $table->engine('InnoDB');
         });
     }
 
