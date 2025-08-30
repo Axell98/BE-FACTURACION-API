@@ -13,4 +13,16 @@ class Categoria extends Model
         'nombre',
         'abreviatura',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'activo' => 'boolean'
+        ];
+    }
+
+    protected function serializeDate(\DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 }
