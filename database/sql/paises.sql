@@ -1,3 +1,5 @@
+DELETE FROM paises;
+
 INSERT INTO paises (id, iso, nombre) VALUES
 (1, 'AF', 'Afganistán'),
 (2, 'AX', 'Islas Gland'),

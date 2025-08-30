@@ -1,3 +1,7 @@
+DELETE FROM distritos;
+DELETE FROM provincias;
+DELETE FROM departamentos;
+
 INSERT INTO departamentos (id, nombre) VALUES
 ('01', 'Amazonas'),
 ('02', 'Áncash'),
