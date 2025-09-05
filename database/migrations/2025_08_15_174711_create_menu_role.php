@@ -15,7 +15,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_menu');
             $table->unsignedBigInteger('id_role');
             $table->primary(['id_menu', 'id_role']);
-            $table->foreign('id_menu')->references('id')->on('menu')->onDelete('cascade')->onUpdate('cascade');
             $table->engine('InnoDB');
         });
     }

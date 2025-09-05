@@ -87,7 +87,9 @@ class AuthController extends Controller
                 'display_name' => $role->display_name,
             ];
         }
-        $userData['foto_url'] = env('APP_URL') . $userData['foto_url'];
+        if (!empty($userData['foto_url'])) {
+            $userData['foto_url'] = env('APP_URL') . $userData['foto_url'];
+        }
         $userData['permissions'] = $user->getAllPermissions()->pluck('name');
         return $userData;
     }

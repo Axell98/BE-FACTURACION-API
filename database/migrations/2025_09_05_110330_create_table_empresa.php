@@ -16,9 +16,10 @@ return new class extends Migration
             $table->string('ruc', 25)->nullable();
             $table->string('razon_social', 250);
             $table->string('nombre_comercial', 250)->nullable();
-            $table->string('direccion', 250)->nullable();
             $table->string('telefono', 50)->nullable();
             $table->string('celular', 50)->nullable();
+            $table->string('email', 120)->nullable();
+            $table->string('direccion', 250)->nullable();
             $table->string('ubigeo', 6)->nullable();
             $table->string('pais', 5)->default('PE');
             $table->boolean('selva_bienes')->nullable();

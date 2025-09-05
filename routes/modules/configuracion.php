@@ -11,6 +11,11 @@ Route::prefix('roles')->group(function () {
     Route::delete('{id}', [Configuracion\RoleController::class, 'remove'])->whereNumber('id')->middleware('permission:role.delete');
 });
 
+Route::prefix('empresa')->group(function () {
+    Route::get('', [Configuracion\EmpresaController::class, 'index'])->middleware('permission:empresa.view');
+    Route::post('', [Configuracion\EmpresaController::class, 'store'])->middleware('permission:empresa.create');
+});
+
 Route::prefix('usuarios')->group(function () {
     Route::get('', [Configuracion\UsuarioController::class, 'index'])->middleware('permission:usuario.view');
     Route::post('', [Configuracion\UsuarioController::class, 'store'])->middleware('permission:usuario.create');
