@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tipo_comprobante', function (Blueprint $table) {
+        Schema::create('tipos_comprobantes', function (Blueprint $table) {
             $table->string('id', 3)->primary();
             $table->string('descripcion', 150);
             $table->boolean('activo')->default(true);
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tipo_comprobante');
+        Schema::dropIfExists('tipos_comprobantes');
     }
 };

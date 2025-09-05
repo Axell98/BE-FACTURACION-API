@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 150);
             $table->boolean('activo')->default(true);
-            $table->timestamps(0);
+            $table->string('created_by', 15)->nullable();
+            $table->timestamp('created_at', 0);
+            $table->string('updated_by', 15)->nullable();
+            $table->timestamp('updated_at', 0);
             $table->engine('InnoDB');
         });
     }

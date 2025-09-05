@@ -22,6 +22,7 @@ Route::prefix('usuarios')->group(function () {
 
 Route::prefix('sistema')->group(function () {
     Route::prefix('datos')->group(function () {
+        Route::get('', [Configuracion\DatosSistemaController::class, 'index']);
         Route::get('ubigeo', [Configuracion\DatosSistemaController::class, 'ubigeo']);
         Route::get('paises', [Configuracion\DatosSistemaController::class, 'paises']);
     });

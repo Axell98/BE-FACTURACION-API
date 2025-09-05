@@ -27,7 +27,11 @@ return new class extends Migration
             $table->string('ubigeo', 6)->nullable();
             $table->integer('empresa');
             $table->boolean('activo')->default(true);
-            $table->timestamps(0);
+            $table->string('created_by', 15)->nullable();
+            $table->timestamp('created_at', 0);
+            $table->string('updated_by', 15)->nullable();
+            $table->timestamp('updated_at', 0);
+            $table->string('deleted_by', 15)->nullable();
             $table->softDeletes();
             $table->engine('InnoDB');
         });

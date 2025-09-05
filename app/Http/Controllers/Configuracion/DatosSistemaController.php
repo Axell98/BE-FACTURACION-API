@@ -4,13 +4,20 @@ namespace App\Http\Controllers\Configuracion;
 
 use App\Http\Controllers\Controller;
 use App\Models\DatosSistema;
+use App\Models\TipoComprobante;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
 class DatosSistemaController extends Controller
 {
 
-    public function data() {}
+    public function index() {
+        $data = [
+            'tipos_documentos' => [],
+            'tipos_comprobantes' => TipoComprobante::all()
+        ];
+        return responseSuccess('Data found', $data);
+    }
 
     public function ubigeo(Request $request)
     {

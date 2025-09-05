@@ -16,15 +16,15 @@ return new class extends Migration
             $table->string('usuario', 20)->unique();
             $table->string('password', 255)->nullable(false);
             $table->string('nombre', 100)->nullable(false);
-            $table->string('tipo_doc', 10)->nullable();
+            $table->string('tipo_doc', 3)->nullable();
             $table->string('nume_doc', 20)->nullable();
             $table->string('celular', 20)->nullable();
             $table->string('email', 100)->nullable();
             $table->string('direccion', 255)->nullable();
-            $table->string('foto', 255)->nullable();
+            $table->string('foto_url', 255)->nullable();
             $table->string('empresa_acceso', 100)->nullable();
             $table->integer('empresa_actual')->nullable();
-            $table->boolean('activo')->default(1)->nullable();
+            $table->boolean('activo')->default(true)->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->engine('InnoDB');

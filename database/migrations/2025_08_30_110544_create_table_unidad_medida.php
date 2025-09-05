@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('unidad_medida', function (Blueprint $table) {
+        Schema::create('unidades', function (Blueprint $table) {
             $table->string('id', 5);
             $table->string('nombre', 150);
             $table->boolean('activo')->default(true);
-            $table->timestamps();
+            $table->string('created_by', 15)->nullable();
+            $table->timestamp('created_at', 0);
+            $table->string('updated_by', 15)->nullable();
+            $table->timestamp('updated_at', 0);
             $table->engine('InnoDB');
         });
     }
