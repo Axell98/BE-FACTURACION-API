@@ -19,7 +19,29 @@ class Menu extends Model
         ];
     }
 
-    public static function userMenu(array $permissions, bool $listarTodo = false)
+    public static function menuPermisos($role)
+    {
+        $query = self::select([
+            'm.id',
+            'm.id_pad',
+            'm.nombre',
+            'm.orden',
+            'm.permission_name',
+            DB::raw("(select 1 from menus_role mr where mr.id_menu as m.id and mr.id_role = $role) as activado")
+        ])
+            ->from('menus as m')
+            ->whereRaw('m.activo = true')
+            ->orderBy('m.orden');
+        die($query->toRawSql());
+        $result = $query->get();
+        foreach ($result as $value) {
+        }
+        // $result = self::reformatMenu($query->get());
+        $result = $query->get();
+        return $result;
+    }
+
+    public static function userMenu(array $permissions)
     {
         $query = self::select([
             'm.id',
@@ -27,12 +49,11 @@ class Menu extends Model
             'm.nombre',
             'm.url',
             'm.icono',
-            'm.activo',
             'm.orden'
         ])
             ->from('menus as m')
             ->whereRaw('m.activo = true');
-        if (!$listarTodo && !is_super_admin()) {
+        if (!is_super_admin()) {
             $query->where(function ($q) use ($permissions) {
                 $q->whereIn('m.permission_name', $permissions)
                     ->orWhereIn('m.id', function ($subQuery) use ($permissions) {

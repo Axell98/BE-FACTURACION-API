@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             UbigeoSeeder::class,
             PaisesSeeder::class,
             MenusSeeder::class,
+            TipoComprobanteSeeder::class
         ]);
     }
 }

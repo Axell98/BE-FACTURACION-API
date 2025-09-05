@@ -12,10 +12,7 @@ class MenuController extends Controller
 
     public function index()
     {
-        $userAuth = JWTAuth::user();
-        $userRole = $userAuth->roles->first();
-        $permissions = $userAuth->getAllPermissions()->pluck('name')->toArray();
-        $data = Menu::userMenu($permissions, true); // $userRole->id, 
+        $data = Menu::menuPermisos(3);
         $message = !empty($data) ? 'Data found' : 'Data not found';
         return responseSuccess($message, $data);
     }

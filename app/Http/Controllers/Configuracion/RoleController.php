@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Configuracion;
 
 use App\Http\Controllers\Controller;
+use App\Models\MenuRole;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
@@ -40,17 +42,28 @@ class RoleController extends Controller
     {
         $request->validate([
             'nombre'   => 'required|string',
-            'permisos' => 'array',
-            'permisos.*' => 'string|exists:permissions,name'
+            'accesos' => 'required|array',
+            'accesos.*.menu' => 'required|integer',
+            'accesos.*.permisos' => 'required|array',
+            'accesos.*.permisos.*' => 'string|exists:permissions,name'
         ]);
-        $newRole = Role::create([
-            'name' => Str::slug($request->nombre),
-            'display_name' => $request->nombre,
-            'guard_name' => 'api'
-        ]);
-        if ($request->has('permisos')) {
-            $newRole->syncPermissions($request->permisos);
-        }
+        DB::transaction(function () use ($request) {
+            $menuRole = [];
+            $permisos = [];
+            $newRole = Role::create([
+                'name' => Str::slug($request->nombre),
+                'display_name' => $request->nombre,
+                'guard_name' => 'api'
+            ]);
+            foreach ($request->accesos as $value) {
+                $permisos = array_merge($permisos, !empty($value['permisos']) ? $value['permisos'] : []);
+                $menuRole[] = ['id_menu' => $value['menu'], 'id_role' => $newRole->id];
+            }
+            MenuRole::insert($menuRole);
+            if (!empty($permisos)) {
+                $newRole->syncPermissions($permisos);
+            }
+        });
         return responseSuccess('Created data', null, 201);
     }
 
