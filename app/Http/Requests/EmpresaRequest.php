@@ -34,7 +34,10 @@ class EmpresaRequest extends FormRequest
             'selva_bienes' => 'sometimes|nullable|string',
             'selva_servicios' => 'sometimes|nullable|string',
             'logo' => 'sometimes|nullable|file',
-            'certificado' => 'sometimes|nullable|file|max:10240'
+            'usuario_sol' => 'sometimes|nullable|string',
+            'password_sol' => 'sometimes|nullable|string',
+            'certificado' => 'sometimes|nullable|file|max:10240',
+            'certificado_key' => 'sometimes|nullable|string'
         ];
     }
 }

@@ -14,13 +14,9 @@ class EmpresaController extends Controller
 {
     public function index(Request $request)
     {
-        $data = Empresa::all();
+        $data = Empresa::list();
         $message = !empty($data) ? 'Data found' : 'Data not found';
-        $newArray = array_map(function ($row) {
-            $row['logo_url'] = !empty($row['logo_url']) ? env('APP_URL') . $row['logo_url'] : null;
-            return $row;
-        }, $data->toArray());
-        return responseSuccess($message, $newArray);
+        return responseSuccess($message, $data);
     }
 
     public function store(EmpresaRequest $request)
@@ -33,6 +29,8 @@ class EmpresaController extends Controller
             'telefono'         => $request->input('telefono'),
             'celular'          => $request->input('celular'),
             'ubigeo'           => $request->input('ubigeo'),
+            'selva_bienes'     => $request->input('selva_bienes') == 'true',
+            'selva_servicios'  => $request->input('selva_servicios') == 'true',
             'created_by'       => JWTAuth::user()->usuario,
         ];
         $data['logo_url'] = null;

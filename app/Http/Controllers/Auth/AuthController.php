@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Empresa;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
@@ -87,9 +88,8 @@ class AuthController extends Controller
                 'display_name' => $role->display_name,
             ];
         }
-        if (!empty($userData['foto_url'])) {
-            $userData['foto_url'] = env('APP_URL') . $userData['foto_url'];
-        }
+        $userData['foto_url'] = !empty($userData['foto_url']) ? env('APP_URL') . $userData['foto_url'] : null;
+        $userData['empresa_acceso'] = Empresa::getEmpresasAsig();
         $userData['permissions'] = $user->getAllPermissions()->pluck('name');
         return $userData;
     }
