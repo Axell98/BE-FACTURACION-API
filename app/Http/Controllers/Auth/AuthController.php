@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use App\Models\Empresa;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
@@ -23,10 +22,14 @@ class AuthController extends Controller
             }
             $expiresIn = JWTAuth::factory()->getTTL();
             $expirationDate = now()->addMinutes($expiresIn)->timestamp;
+            $userData = new UserResource(JWTAuth::user());
+            if (!$userData->activo) {
+                return responseError('Su usuario se encuentra inactivo', 403);
+            }
             return responseSuccess('Authenticated user.', [
-                'expiresIn'   => $expirationDate,
-                'accessToken' => $token,
-                'userData'    => $this->getUserData(JWTAuth::user())
+                'token' => $token,
+                'expiresIn' => $expirationDate,
+                'userData' => $userData
             ]);
         } catch (JWTException $ex) {
             return responseError('Could not create token.', 500, $ex->getMessage());
@@ -44,8 +47,8 @@ class AuthController extends Controller
             $expiresIn = JWTAuth::factory()->getTTL();
             $expirationDate = now()->addMinutes($expiresIn)->timestamp;
             return responseSuccess('Token refreshed.', [
+                'token' => $newToken,
                 'expiresIn'   => $expirationDate,
-                'accessToken' => $newToken
             ]);
         } catch (JWTException $ex) {
             return responseError('Could not refresh token.', 500, $ex->getMessage());
@@ -58,7 +61,10 @@ class AuthController extends Controller
             if (!$user = JWTAuth::parseToken()->authenticate()) {
                 return responseError('User not found.', 404);
             }
-            $userData = $this->getUserData($user);
+            $userData = new UserResource($user);
+            if (!$userData->activo) {
+                return responseError('Su usuario se encuentra inactivo', 403);
+            }
             return responseSuccess('User data found.', $userData);
         } catch (JWTException $ex) {
             return responseError('Invalid token.', 500, $ex->getMessage());
@@ -76,21 +82,5 @@ class AuthController extends Controller
         } catch (JWTException $ex) {
             return responseError('Failed to invalidate token.', 500, $ex->getMessage());
         }
-    }
-
-    private function getUserData($user)
-    {
-        $role = $user->roles->first();
-        $userData = $user->toArray();
-        if ($role) {
-            $userData['roles'] = [
-                'name' => $role->name,
-                'display_name' => $role->display_name,
-            ];
-        }
-        $userData['foto_url'] = !empty($userData['foto_url']) ? env('APP_URL') . $userData['foto_url'] : null;
-        $userData['empresa_acceso'] = Empresa::getEmpresasAsig();
-        $userData['permissions'] = $user->getAllPermissions()->pluck('name');
-        return $userData;
     }
 }

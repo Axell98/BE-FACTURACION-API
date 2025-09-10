@@ -88,7 +88,7 @@ class Empresa extends Model
             ->leftJoin('departamentos as d', 'd.id', '=', DB::raw("SUBSTRING(e.ubigeo, 1, 2)"))
             ->leftJoin('provincias as p', 'p.id', '=', DB::raw("SUBSTRING(e.ubigeo, 1, 4)"))
             ->leftJoin('distritos as d1', 'd1.id', '=', 'e.ubigeo');
-        $result = $query->get();
+        $result = $query->get()->toArray();
         return $result;
     }
 

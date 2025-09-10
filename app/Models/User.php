@@ -12,7 +12,7 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasRoles, SoftDeletes;
 
-    protected $table = 'usuario';
+    protected $table = 'usuarios';
     protected $primaryKey = 'id';
     protected $guard_name = 'api';
 
@@ -25,8 +25,6 @@ class User extends Authenticatable implements JWTSubject
         'celular',
         'direccion',
         'foto_url',
-        'empresa_acceso',
-        'empresa_actual',
         'activo',
     ];
 
