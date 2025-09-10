@@ -43,6 +43,19 @@ return new class extends Migration
             $table->timestamp('updated_at', 0);
             $table->engine('InnoDB');
         });
+
+        Schema::create('empresas_usuario', function (Blueprint $table) {
+            $table->unsignedBigInteger('id_empresa')->nullable(false);
+            $table->unsignedBigInteger('id_usuario')->nullable(false);
+            $table->boolean('default')->nullable();
+            $table->primary(['id_empresa', 'id_usuario']);
+            $table->foreign('id_empresa')
+                ->references('id')
+                ->on('empresas')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->engine('InnoDB');
+        });
     }
 
     /**
@@ -50,6 +63,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_empresa');
+        Schema::dropIfExists('empresas_usuario');
+        Schema::dropIfExists('empresas');
     }
 };

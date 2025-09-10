@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menu_role', function (Blueprint $table) {
+        Schema::create('menus_role', function (Blueprint $table) {
             $table->unsignedBigInteger('id_menu');
             $table->unsignedBigInteger('id_role');
             $table->primary(['id_menu', 'id_role']);
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menu_role');
+        Schema::dropIfExists('menus_role');
     }
 };
