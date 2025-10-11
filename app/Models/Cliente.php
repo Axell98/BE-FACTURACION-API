@@ -28,15 +28,22 @@ class Cliente extends Model
         'activo'
     ];
 
-    public static function getData(array $params = [])
+    protected $hidden = [
+        'deleted_at',
+        'deleted_by',
+    ];
+
+    protected function casts(): array
     {
-        $query = self::select('*');
-        $result = $query->get();
-        return $result->toArray();
+        return [
+            'activo' => 'boolean'
+        ];
     }
 
     protected function serializeDate(\DateTimeInterface $date): string
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public static function listarClientes(array $params) {}
 }
