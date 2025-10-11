@@ -11,7 +11,8 @@ use Spatie\Permission\Models\Permission;
 class DatosSistemaController extends Controller
 {
 
-    public function index() {
+    public function index()
+    {
         $data = [
             'tipos_documentos' => [],
             'tipos_comprobantes' => TipoComprobante::all()
@@ -37,7 +38,8 @@ class DatosSistemaController extends Controller
         return responseSuccess('Data found', $data);
     }
 
-    public function permisos() {
+    public function permisos()
+    {
         $data = Permission::all();
         return responseSuccess('Data found', $data);
     }

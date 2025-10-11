@@ -49,7 +49,8 @@ class Menu extends Model
             'm.nombre',
             'm.url',
             'm.icono',
-            'm.orden'
+            'm.orden',
+			DB::raw("false as activo")
         ])
             ->from('menus as m')
             ->whereRaw('m.activo = true');
