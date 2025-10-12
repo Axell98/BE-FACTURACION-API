@@ -16,8 +16,9 @@ class DatabaseSeeder extends Seeder
             SuperAdminSeeder::class,
             UbigeoSeeder::class,
             PaisesSeeder::class,
-            MenusSeeder::class,
-            TipoComprobanteSeeder::class
+            // MenusSeeder::class,
+            TipoComprobanteSeeder::class,
+            TipoDocumentoSeeder::class,
         ]);
     }
 }

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sucursales', function (Blueprint $table) {
+        Schema::create('sucursal', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('id_empresa')->unsigned();
             $table->string('cod_sunat', 20)->nullable(false);
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->timestamp('updated_at', 0);
             $table->foreign('id_empresa')
                 ->references('id')
-                ->on('empresas')
+                ->on('empresa')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->engine('InnoDB');
@@ -43,6 +43,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sucursales');
+        Schema::dropIfExists('sucursal');
     }
 };

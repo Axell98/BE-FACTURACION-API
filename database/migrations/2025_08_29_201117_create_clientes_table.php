@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('tipo_cliente');
-            $table->string('nombres', 150)->nullable();
-            $table->string('apellidos', 150)->nullable();
-            $table->string('razon_social', 250)->nullable();
+            $table->string('nombre', 250)->nullable();
+            $table->string('nombre_comercial', 250)->nullable();
             $table->string('tipo_doc', 2)->nullable();
             $table->string('nume_doc', 20)->nullable();
             $table->string('ruc', 20)->nullable();
@@ -25,7 +23,7 @@ return new class extends Migration
             $table->string('email', 150)->nullable();
             $table->string('direccion', 250)->nullable();
             $table->string('ubigeo', 6)->nullable();
-            $table->integer('empresa');
+            $table->integer('empresa')->default(1);
             $table->boolean('activo')->default(true);
             $table->string('created_by', 15)->nullable();
             $table->timestamp('created_at', 0);

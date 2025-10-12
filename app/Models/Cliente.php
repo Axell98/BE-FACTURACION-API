@@ -9,13 +9,11 @@ class Cliente extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'clientes';
+    protected $table = 'cliente';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'tipo_cliente',
-        'nombres',
-        'apellidos',
-        'razon_social',
+        'nombre',
+        'nombre_comercial',
         'tipo_doc',
         'nume_doc',
         'ruc',
@@ -44,6 +42,4 @@ class Cliente extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
-
-    public static function listarClientes(array $params) {}
 }

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Registros;
 
+use App\Models\Cliente;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClienteRequest;
-use App\Models\Cliente;
 use Illuminate\Http\Request;
 
 class ClientesController extends Controller
