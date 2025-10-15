@@ -33,6 +33,7 @@ class ClienteRequest extends FormRequest
             'direccion' => 'sometimes|nullable|string',
             'ubigeo' => 'sometimes|nullable|string',
             'empresa' => 'required|integer',
+            'codigo_int' => 'sometimes|nullable|string',
             'activo' => 'sometimes|nullable|boolean',
         ];
     }

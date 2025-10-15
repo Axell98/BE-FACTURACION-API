@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('serie', 10);
             $table->integer('correlativo');
             $table->primary(['sucursal', 'tipo_comp']);
-            $table->foreign('sucursal')->references('id')->on('sucursales')->onDelete('cascade');
+            $table->foreign('sucursal')->references('id')->on('sucursal')->onDelete('cascade');
             $table->engine('InnoDB');
         });
     }

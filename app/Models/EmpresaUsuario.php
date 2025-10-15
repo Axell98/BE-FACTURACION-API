@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class EmpresaUsuario extends Model
 {
-    protected $table = 'empresas_usuario';
+    protected $table = 'empresa_usuario';
     protected $primaryKey = 'id';
     protected $fillable = [
         'id_empresa',
@@ -32,7 +32,7 @@ class EmpresaUsuario extends Model
             'e.razon_social',
             DB::raw("case when coalesce(e.logo_url, '') <> '' then concat('" . env('APP_URL') . "', e.logo_url) else null end as logo_url"),
         ])
-            ->from('empresas as e');
+            ->from('empresa as e');
         if (!is_super_admin()) {
             $query->join('empresa_usuario as eu', 'eu.id_empresa', '=', 'e.id')
                 ->where('eu.id_usuario', $userId)

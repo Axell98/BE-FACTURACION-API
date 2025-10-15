@@ -23,6 +23,7 @@ class Cliente extends Model
         'direccion',
         'ubigeo',
         'empresa',
+        'codigo_int',
         'activo'
     ];
 
