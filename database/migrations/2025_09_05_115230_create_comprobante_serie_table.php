@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comprobante_serie', function (Blueprint $table) {
+        Schema::create('comprobantes_serie', function (Blueprint $table) {
             $table->unsignedBigInteger('sucursal');
             $table->string('tipo_comp', 3);
             $table->string('serie', 10);
             $table->integer('correlativo');
             $table->primary(['sucursal', 'tipo_comp']);
-            $table->foreign('sucursal')->references('id')->on('sucursal')->onDelete('cascade');
+            $table->foreign('sucursal')->references('id')->on('sucursales')->onDelete('cascade');
             $table->engine('InnoDB');
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comprobante_serie');
+        Schema::dropIfExists('comprobantes_serie');
     }
 };

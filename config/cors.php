@@ -15,15 +15,15 @@ return [
     |
     */
 
-    'paths' => ['api/*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-    'allowed_methods' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:3000', 'https://facturacion-app-beta.vercel.app'],
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['Content-Type', 'Authorization'],
+    'allowed_headers' => ['*'],
 
     'exposed_headers' => [],
 

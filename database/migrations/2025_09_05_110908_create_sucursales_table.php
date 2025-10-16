@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sucursal', function (Blueprint $table) {
+        Schema::create('sucursales', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('id_empresa')->unsigned();
             $table->string('cod_sunat', 20)->nullable(false);
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->timestamp('updated_at', 0);
             $table->foreign('id_empresa')
                 ->references('id')
-                ->on('empresa')
+                ->on('empresas')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->engine('InnoDB');

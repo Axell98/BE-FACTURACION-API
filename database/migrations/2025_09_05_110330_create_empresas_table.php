@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('empresa', function (Blueprint $table) {
+        Schema::create('empresas', function (Blueprint $table) {
             $table->id();
             $table->string('ruc', 25)->nullable();
             $table->string('razon_social', 250);
@@ -44,14 +44,14 @@ return new class extends Migration
             $table->engine('InnoDB');
         });
 
-        Schema::create('empresa_usuario', function (Blueprint $table) {
+        Schema::create('empresas_usuario', function (Blueprint $table) {
             $table->unsignedBigInteger('id_empresa')->nullable(false);
             $table->unsignedBigInteger('id_usuario')->nullable(false);
             $table->boolean('default')->nullable();
             $table->primary(['id_empresa', 'id_usuario']);
             $table->foreign('id_empresa')
                 ->references('id')
-                ->on('empresa')
+                ->on('empresas')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->engine('InnoDB');

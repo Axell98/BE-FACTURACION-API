@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Configuracion;
 
 use App\Http\Controllers\Controller;
 use App\Models\DatosSistema;
+use App\Models\TipoDocumento;
 use App\Models\TipoComprobante;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
@@ -14,7 +15,7 @@ class DatosSistemaController extends Controller
     public function index()
     {
         $data = [
-            'tipos_documentos' => [],
+            'tipos_documentos' => TipoDocumento::all(),
             'tipos_comprobantes' => TipoComprobante::all()
         ];
         return responseSuccess('Data found', $data);

@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Categoria extends Model
-{
+{   
     protected $table = 'categorias';
     protected $primaryKey = 'id';
     protected $fillable = [
         'id',
         'nombre',
-        'abreviatura',
+        'activo'
     ];
 
     protected function casts(): array

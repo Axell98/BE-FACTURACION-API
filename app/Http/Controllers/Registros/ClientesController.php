@@ -11,10 +11,10 @@ class ClientesController extends Controller
 {
     public function index(Request $request)
     {
-        $request->validate([
+        $params = $request->validate([
             'empresa' => 'sometimes|nullable|integer'
         ]);
-        $data = Cliente::all();
+        $data = Cliente::listarClientes($params);
         $message = !empty($data) ? 'Data found' : 'Data not found';
         return responseSuccess($message, $data);
     }
