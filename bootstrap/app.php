@@ -20,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         ]);
-		$middleware->append(\Illuminate\Http\Middleware\HandleCors::class);
+        $middleware->append(\Illuminate\Http\Middleware\HandleCors::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e, Request $request) {
@@ -45,7 +45,7 @@ return Application::configure(basePath: dirname(__DIR__))
         });
         $exceptions->render(function (\Illuminate\Database\QueryException $e, Request $request) {
             if ($request->is('api/*')) {
-                return responseError('Error in database.', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+                return responseError('Error in database query.', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
             }
         });
     })->create();

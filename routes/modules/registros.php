@@ -16,3 +16,10 @@ Route::prefix('categorias')->group(function () {
     Route::put('{id}', [Registros\CategoriasController::class, 'update'])->middleware('permission:categorias.edit')->whereNumber('id');
     Route::delete('{id}', [Registros\CategoriasController::class, 'remove'])->middleware('permission:categorias.delete')->whereNumber('id');
 });
+
+Route::prefix('unidades')->group(function () {
+    Route::get('', [Registros\UnidadesController::class, 'index'])->middleware('permission:unidades.view');
+    Route::post('', [Registros\UnidadesController::class, 'store']);
+    Route::update('{id}', [Registros\UnidadesController::class, 'update'])->whereNumber('id');
+    Route::delete('{id}', [Registros\UnidadesController::class, 'remove'])->whereNumber('id');
+});

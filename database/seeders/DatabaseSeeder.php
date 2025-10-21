@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             // MenusSeeder::class,
             TipoComprobanteSeeder::class,
             TipoDocumentoSeeder::class,
+            UnidadMedidaSeeder::class
         ]);
     }
 }

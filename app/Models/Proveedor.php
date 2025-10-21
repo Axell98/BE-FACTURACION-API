@@ -11,4 +11,17 @@ class Proveedor extends Model
 
     protected $table = 'proveedores';
     protected $primaryKey = 'id';
+
+
+    protected $hidden = [
+        'deleted_at',
+        'deleted_by',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'activo' => 'boolean'
+        ];
+    }
 }

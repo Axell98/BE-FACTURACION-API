@@ -32,9 +32,9 @@ class EmpresaUsuario extends Model
             'e.razon_social',
             DB::raw("case when coalesce(e.logo_url, '') <> '' then concat('" . env('APP_URL') . "', e.logo_url) else null end as logo_url"),
         ])
-            ->from('empresa as e');
+            ->from('empresas as e');
         if (!is_super_admin()) {
-            $query->join('empresa_usuario as eu', 'eu.id_empresa', '=', 'e.id')
+            $query->join('empresas_usuario as eu', 'eu.id_empresa', '=', 'e.id')
                 ->where('eu.id_usuario', $userId)
                 ->orderByDesc('eu.default');
         }

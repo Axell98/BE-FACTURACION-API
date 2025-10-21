@@ -13,15 +13,17 @@ class TipoDocumentoSeeder extends Seeder
     public function run(): void
     {
         $tiposComprobantes = [
-            '0' => 'SIN DOCUMENTO',
+            '0' => 'Sin documento',
             '1' => 'DNI',
-            '4' => 'CARNET DE EXTRANJERÍA',
-            '7' => 'RUC',
-            'A' => 'CÉDULA DIPLOMÁTICA DE IDENTIDAD',
-            'B' => 'DOC.IDENT.PAIS.RESIDENCIA-NO.D',
-            'C' => 'Tax Identification Number - TIN – Doc Trib PP.NN',
+            '4' => 'Carnet de extranjería',
+            '6' => 'RUC',
+            '7' => 'Pasaporte',
+            'A' => 'Cédula diplomática de identidad',
+            'B' => 'Documento identidad país residencia-no.d',
+            'C' => 'Tax Identificación Number - TIN – Doc Trib PP.NN',
             'D' => 'Identification Number - IN – Doc Trib PP. JJ',
-            'E' => 'TAM- Tarjeta Andina de Migración'
+            'E' => 'TAM - Tarjeta Andina de Migración',
+            'F' => 'PTP - Permiso Temporal de Permanencia'
         ];
         foreach ($tiposComprobantes as $key => $value) {
             TipoDocumento::firstOrCreate([

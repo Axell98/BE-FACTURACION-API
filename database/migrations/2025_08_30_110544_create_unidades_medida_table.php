@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('unidades', function (Blueprint $table) {
-            $table->string('id', 5)->primary();
-            $table->string('nombre', 150);
+        Schema::create('unidades_medida', function (Blueprint $table) {
+            $table->id();
+            $table->string('codigo_sunat', 5)->unique();
+            $table->string('descripcion', 150);
+            $table->string('simbolo', 20);
             $table->boolean('activo')->default(true);
             $table->string('created_by', 15)->nullable();
             $table->timestamp('created_at', 0);
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('unidades');
+        Schema::dropIfExists('unidades_medida');
     }
 };
