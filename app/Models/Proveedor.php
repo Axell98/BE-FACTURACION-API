@@ -24,4 +24,8 @@ class Proveedor extends Model
             'activo' => 'boolean'
         ];
     }
+
+    public function listarProveedores(array $params) {
+        $query = self::select();
+    }
 }

@@ -3,48 +3,46 @@
 namespace App\Http\Controllers\Registros;
 
 use App\Http\Controllers\Controller;
-use App\Models\UnidadMedida;
+use App\Models\UnidadesMedida;
 use Illuminate\Http\Request;
-use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class UnidadesController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $data = UnidadMedida::all();
-        $message = count($data) > 0 ? 'Data found' : 'Data not found';
+        $data = UnidadesMedida::where('activo', true)->orderBy('descripcion')->get()->toArray();
+        $message = !empty($data) ? 'Data found' : 'Data not found';
         return responseSuccess($message, $data);
     }
 
     public function store(Request $request)
     {
         $body = $request->validate([
-            'id' => 'required|string',
-            'nombre' => 'required|string',
-            'activo' => 'sometimes|nullable|boolean'
+            'codigo_sunat' => 'required|string',
+            'descripcion'  => 'required|string',
+            'activo'       => 'sometimes|nullable|boolean'
         ]);
-        $body['created_by'] = JWTAuth::user()->usuario;
-        UnidadMedida::create($body);
+        UnidadesMedida::create($body);
         return responseSuccess('Created data');
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nombre' => 'required|string',
+            'codigo_sunat' => 'required|string',
+            'descripcion' => 'required|string',
             'activo' => 'sometimes|nullable|boolean'
         ]);
-        UnidadMedida::whereId($id)->update([
+        UnidadesMedida::whereId($id)->update([
             'nombre' => $request->input('nombre'),
-            'activo' => $request->input('activo', true),
-            'updated_by' => JWTAuth::user()->usuario,
+            'activo' => $request->input('activo', true)
         ]);
         return responseSuccess('Updated data');
     }
 
     public function remove($id)
     {
-        UnidadMedida::where('id', $id)->remove();
+        UnidadesMedida::where('id', $id)->remove();
         return responseSuccess('Deleted data');
     }
 }

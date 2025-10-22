@@ -3,16 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Categoria extends Model
-{   
+{
+    use SoftDeletes;
+    
     protected $table = 'categorias';
     protected $primaryKey = 'id';
     protected $fillable = [
         'id',
-        'nombre',
-        'activo'
+        'descripcion',
+        'activo',
+        'created_by',
+        'updated_by',
+        'deleted_by'
     ];
+    public $incrementing = true;
 
     protected function casts(): array
     {

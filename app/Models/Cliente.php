@@ -13,7 +13,8 @@ class Cliente extends Model
     protected $table = 'clientes';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'nombre',
+        'codigo_int',
+        'razon_social',
         'nombre_comercial',
         'tipo_doc',
         'nume_doc',
@@ -23,8 +24,10 @@ class Cliente extends Model
         'email',
         'direccion',
         'ubigeo',
+        'contacto',
+        'web',
+        'cuenta_detraccion',
         'empresa',
-        'codigo_int',
         'activo'
     ];
 
@@ -45,34 +48,34 @@ class Cliente extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    public static function listarClientes(array $params)
+    public static function listClientes(array $params)
     {
         $query = self::query()
             ->select([
-                'cliente.id',
-                'cliente.nombre',
-                'cliente.nombre_comercial',
-                'cliente.tipo_doc',
+                'clientes.id',
+                'clientes.codigo_int',
+                'clientes.razon_social',
+                'clientes.nombre_comercial',
+                'clientes.tipo_doc',
                 't.descripcion as tipo_doc_des',
-                'cliente.nume_doc',
-                'cliente.ruc',
-                'cliente.telefono',
-                'cliente.celular',
-                'cliente.email',
-                'cliente.direccion',
-                'cliente.ubigeo',
-                DB::raw("case when coalesce(cliente.ubigeo, '') <> '' then concat(e.nombre, ' - ', trim(p.nombre), ' - ', d.nombre) else null end as ubigeo_des"),
-                'cliente.empresa',
-                'cliente.activo',
-                'cliente.created_by',
-                'cliente.created_at'
+                'clientes.nume_doc',
+                'clientes.ruc',
+                'clientes.telefono',
+                'clientes.celular',
+                'clientes.email',
+                'clientes.direccion',
+                'clientes.ubigeo',
+                DB::raw("case when coalesce(clientes.ubigeo, '') <> '' then concat(e.nombre, ' - ', trim(p.nombre), ' - ', d.nombre) else null end as ubigeo_des"),
+                'clientes.empresa',
+                'clientes.activo',
+                'clientes.created_by',
+                'clientes.created_at'
             ])
-            ->leftJoin('tipo_documento as t', 't.id', '=', 'cliente.tipo_doc')
-            ->leftJoin('distritos as d', 'd.id', '=', 'cliente.ubigeo')
+            ->leftJoin('tipos_documento as t', 't.id', '=', 'clientes.tipo_doc')
+            ->leftJoin('distritos as d', 'd.id', '=', 'clientes.ubigeo')
             ->leftJoin('provincias as p', 'p.id', '=', 'd.provincia_id')
             ->leftJoin('departamentos as e', 'e.id', '=', 'd.departamento_id')
-            ->orderByDesc('cliente.created_at');
-        // die($query->toRawSql());
+            ->orderByDesc('clientes.created_at');
         $result = $query->get();
         return $result;
     }

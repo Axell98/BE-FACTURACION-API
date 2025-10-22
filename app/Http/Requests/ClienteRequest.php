@@ -22,7 +22,8 @@ class ClienteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'sometimes|nullable|string',
+            'codigo_int' => 'sometimes|nullable|string',
+            'razon_social' => 'sometimes|nullable|string',
             'nombre_comercial' => 'sometimes|nullable|string',
             'tipo_doc' => 'sometimes|nullable|string',
             'nume_doc' => 'sometimes|nullable|string',
@@ -32,8 +33,10 @@ class ClienteRequest extends FormRequest
             'email' => 'sometimes|nullable|string',
             'direccion' => 'sometimes|nullable|string',
             'ubigeo' => 'sometimes|nullable|string',
+            'contacto' => 'sometimes|nullable|string',
             'empresa' => 'required|integer',
-            'codigo_int' => 'sometimes|nullable|string',
+            'web' => 'sometimes|nullable|string',
+            'cuenta_detraccion' => 'sometimes|nullable|string',
             'activo' => 'sometimes|nullable|boolean',
         ];
     }

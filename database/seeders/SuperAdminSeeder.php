@@ -25,7 +25,7 @@ class SuperAdminSeeder extends Seeder
                 'usuario' => env('DEFAULT_ADMIN')
             ],
             [
-                'nombre'     => 'Super Administrador',
+                'nombres'    => 'Super Administrador',
                 'password'   => bcrypt(env('DEFAULT_ADMIN_PASSWORD')),
                 'created_at' => now()
             ]

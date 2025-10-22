@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('usuario', 25)->unique();
             $table->string('password', 255)->nullable(false);
             $table->string('nombres', 150)->nullable(false);
-            $table->string('apellidos', 150)->nullable(false);
+            $table->string('apellidos', 150)->nullable();
             $table->string('tipo_doc', 3)->nullable();
             $table->string('nume_doc', 20)->nullable();
             $table->date('fecha_nac')->nullable();

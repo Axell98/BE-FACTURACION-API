@@ -12,12 +12,15 @@ use Spatie\Permission\Models\Permission;
 class DatosSistemaController extends Controller
 {
 
-    public function index()
+    public function documentos()
     {
-        $data = [
-            'tipos_documentos' => TipoDocumento::all(),
-            'tipos_comprobantes' => TipoComprobante::all()
-        ];
+        $data = TipoDocumento::all();
+        return responseSuccess('Data found', $data);
+    }
+
+    public function comprobantes()
+    {
+        $data = TipoComprobante::where('activo', true)->get()->toArray();
         return responseSuccess('Data found', $data);
     }
 

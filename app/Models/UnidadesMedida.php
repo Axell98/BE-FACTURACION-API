@@ -14,20 +14,14 @@ class UnidadesMedida extends Model
         'descripcion',
         'simbolo',
         'activo',
-        'created_by',
-        'updated_by'
     ];
     public $incrementing = true;
+    public $timestamps = false;
 
     protected function casts(): array
     {
         return [
             'activo' => 'boolean'
         ];
-    }
-
-    protected function serializeDate(\DateTimeInterface $date): string
-    {
-        return $date->format('Y-m-d H:i:s');
     }
 }

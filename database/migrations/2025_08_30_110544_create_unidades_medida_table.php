@@ -14,13 +14,9 @@ return new class extends Migration
         Schema::create('unidades_medida', function (Blueprint $table) {
             $table->id();
             $table->string('codigo_sunat', 5)->unique();
-            $table->string('descripcion', 150);
-            $table->string('simbolo', 20);
+            $table->string('descripcion', 150)->nullable(false);
+            $table->string('simbolo', 20)->nullable();
             $table->boolean('activo')->default(true);
-            $table->string('created_by', 15)->nullable();
-            $table->timestamp('created_at', 0);
-            $table->string('updated_by', 15)->nullable();
-            $table->timestamp('updated_at', 0);
             $table->engine('InnoDB');
         });
     }

@@ -28,9 +28,9 @@ return new class extends Migration
             $table->integer('empresa')->default(1);
             $table->boolean('activo')->default(true);
             $table->string('created_by', 15)->nullable();
-            $table->timestamp('created_at', 0);
+            $table->timestamp('created_at', 0)->nullable();
             $table->string('updated_by', 15)->nullable();
-            $table->timestamp('updated_at', 0);
+            $table->timestamp('updated_at', 0)->nullable();
             $table->string('deleted_by', 15)->nullable();
             $table->softDeletes();
             $table->engine('InnoDB');
