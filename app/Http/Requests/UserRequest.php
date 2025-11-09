@@ -22,15 +22,16 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'usuario'  => 'required|string',
-            'nombre'   => 'required|string',
-            'password' => 'required|string|min:8',
-            'role'     => 'required|string|exists:roles,name',
-            'tipo_doc' => 'present|nullable|string',
-            'nume_doc' => 'present|nullable|string',
-            'celular'  => 'present|nullable|string',
-            'direccion' => 'present|nullable|string',
-            'empresas' => 'required|array',
+            'usuario'    => 'sometimes|nullable|string',
+            'nombres'    => 'required|string',
+            'password'   => 'required|string|min:8',
+            // 'role'       => 'required|string|exists:roles,name',
+            'tipo_doc'   => 'present|nullable|string',
+            'nume_doc'   => 'present|nullable|string',
+            'fecha_nac'  => 'sometimes|nullable|date',
+            'celular'    => 'present|nullable|string',
+            'direccion'  => 'present|nullable|string',
+            'empresas'   => 'required|array',
             'empresas.*' => 'required|integer|min:1'
         ];
         if ($this->isMethod('PUT')) {

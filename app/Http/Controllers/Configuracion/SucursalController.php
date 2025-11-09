@@ -20,4 +20,8 @@ class SucursalController extends Controller
     }
 
     public function register(SucursalRequest $request) {}
+
+    public function update(SucursalRequest $request, int $id) {}
+
+    public function remove(int $id) {}
 }

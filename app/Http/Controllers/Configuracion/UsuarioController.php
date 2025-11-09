@@ -25,16 +25,22 @@ class UsuarioController extends Controller
 
     public function store(UserRequest $request)
     {
+        $userCod = $request->input('usuario');
+        if (empty($userCod)) {
+            $userCod = generateUsername($request->nombres . ' ' . $request->apellidos);
+        }
         $user = User::create([
-            'usuario'   => $request->usuario,
+            'usuario'   => $userCod,
             'password'  => bcrypt($request->password),
-            'nombre'    => $request->nombre,
+            'nombres'   => $request->nombres,
+            'apellidos' => $request->apellidos,
             'tipo_doc'  => $request->input('tipo_doc'),
             'nume_doc'  => $request->input('nume_doc'),
+            'fecha_nac' => $request->input('fecha_nac'),
             'celular'   => $request->input('celular'),
             'direccion' => $request->input('direccion')
         ]);
-        $user->assignRole($request->role);
+        // $user->assignRole($request->role);
         return responseSuccess('Created data', null, 201);
     }
 

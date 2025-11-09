@@ -11,8 +11,16 @@ class Sucursal extends Model
     protected $fillable = [
         'id',
         'nombre',
-        'abreviatura',
+        'direccion',
+        'ubigeo'
     ];
     public $incrementing = false;
     public $timestamps = false;
+
+    public function listarSucursales(array $params = [])
+    {
+        $query = self::select();
+        $result = $query->get();
+        return $result;
+    }
 }

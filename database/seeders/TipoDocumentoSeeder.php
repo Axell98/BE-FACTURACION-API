@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\DatosDet;
 use App\Models\TipoDocumento;
 use Illuminate\Database\Seeder;
 
@@ -10,6 +11,9 @@ class TipoDocumentoSeeder extends Seeder
     /**
      * Run the database seeds.
      */
+
+    protected $cabId = '002';
+
     public function run(): void
     {
         $tiposComprobantes = [
@@ -25,12 +29,19 @@ class TipoDocumentoSeeder extends Seeder
             'E' => 'TAM - Tarjeta Andina de Migración',
             'F' => 'PTP - Permiso Temporal de Permanencia'
         ];
+        DatosDet::createCab([
+            'id' => $this->cabId,
+            'descripcion' => 'Tipos de comprobante',
+        ]);
+        $orden = 1;
         foreach ($tiposComprobantes as $key => $value) {
-            TipoDocumento::firstOrCreate([
-                'id' => $key,
-            ], [
-                'descripcion' => $value
+            DatosDet::create([
+                'id_cab' => $this->cabId,
+                'id_det' => $key,
+                'descripcion' => $value,
+                'orden' => $orden
             ]);
+            $orden++;
         }
     }
 }

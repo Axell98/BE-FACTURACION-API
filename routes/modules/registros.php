@@ -19,7 +19,5 @@ Route::prefix('categorias')->group(function () {
 
 Route::prefix('unidades')->group(function () {
     Route::get('', [Registros\UnidadesController::class, 'index'])->middleware('permission:unidades.view');
-    Route::post('', [Registros\UnidadesController::class, 'store']);
     Route::put('{id}', [Registros\UnidadesController::class, 'update'])->whereNumber('id');
-    Route::delete('{id}', [Registros\UnidadesController::class, 'remove'])->whereNumber('id');
 });

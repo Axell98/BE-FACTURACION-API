@@ -30,11 +30,13 @@ class UnidadesController extends Controller
     {
         $request->validate([
             'codigo_sunat' => 'required|string',
-            'descripcion' => 'required|string',
-            'activo' => 'sometimes|nullable|boolean'
+            'descripcion'  => 'required|string',
+            'simbolo'      => 'sometimes|nullable|string',
+            'activo'       => 'sometimes|nullable|boolean'
         ]);
-        UnidadesMedida::whereId($id)->update([
-            'nombre' => $request->input('nombre'),
+        UnidadesMedida::where('id', $id)->update([
+            'descripcion' => $request->input('descripcion'),
+            'simbolo' => $request->input('simbolo'),
             'activo' => $request->input('activo', true)
         ]);
         return responseSuccess('Updated data');
