@@ -24,20 +24,20 @@ class EmpresaUsuario extends Model
         ];
     }
 
-    public static function getEmpresas(int $userId)
+    public static function getEmpresaUsuario(int $userId)
     {
         $query = self::select([
             'e.id',
             'e.ruc',
             'e.razon_social',
-            DB::raw("case when coalesce(e.logo_url, '') <> '' then concat('" . env('APP_URL') . "', e.logo_url) else null end as logo_url"),
+            DB::raw("case when coalesce(e.logo_url, '') <> '' then concat('" . config('app.url') . "', e.logo_url) else null end as logo_url"),
         ])
-            ->from('empresas as e');
-        if (!is_super_admin()) {
-            $query->join('empresas_usuario as eu', 'eu.id_empresa', '=', 'e.id')
-                ->where('eu.id_usuario', $userId)
-                ->orderByDesc('eu.default');
-        }
+            ->from('empresas as e')
+            ->when(!isSuperAdmin(), function ($q) use ($userId) {
+                $q->join('empresas_usuario as eu', 'eu.id_empresa', '=', 'e.id')
+                    ->where('eu.id_usuario', $userId)
+                    ->orderByDesc('eu.default');
+            });
         $result = $query->get();
         return $result->toArray();
     }

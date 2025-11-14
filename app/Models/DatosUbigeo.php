@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
-class DatosSistema extends Model
+class DatosUbigeo extends Model
 {
     public static function getUbigeo(array $params)
     {

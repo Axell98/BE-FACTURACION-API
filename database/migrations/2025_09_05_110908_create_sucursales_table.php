@@ -13,23 +13,22 @@ return new class extends Migration
     {
         Schema::create('sucursales', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('id_empresa')->unsigned();
+            $table->string('empresa', '3')->nullable(false);
             $table->string('cod_sunat', 20)->nullable(false);
             $table->string('nombre', 150)->nullable(false);
             $table->string('telefono', 50)->nullable();
             $table->string('celular', 50)->nullable();
             $table->string('email', 150)->nullable();
-            $table->string('descripcion', 250)->nullable();
+            $table->string('direccion', 250)->nullable();
             $table->string('ubigeo', 6)->nullable();
             $table->boolean('principal')->nullable();
-            $table->boolean('activo')->default(true);
             $table->string('logo_menu', 255)->nullable();
             $table->string('logo_impresion', 255)->nullable();
             $table->string('created_by', 15)->nullable();
             $table->timestamp('created_at', 0);
             $table->string('updated_by', 15)->nullable();
             $table->timestamp('updated_at', 0);
-            $table->foreign('id_empresa')
+            $table->foreign('empresa')
                 ->references('id')
                 ->on('empresas')
                 ->onDelete('cascade')

@@ -31,7 +31,7 @@ class TipoDocumentoSeeder extends Seeder
         ];
         DatosDet::createCab([
             'id' => $this->cabId,
-            'descripcion' => 'Tipos de comprobante',
+            'descripcion' => 'Tipos de documento ident.',
         ]);
         $orden = 1;
         foreach ($tiposComprobantes as $key => $value) {

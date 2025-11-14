@@ -24,7 +24,7 @@ class AuthController extends Controller
             $expirationDate = now()->addMinutes($expiresIn)->timestamp;
             $userData = new UserResource(JWTAuth::user());
             if (!$userData->activo) {
-                return responseError('Su usuario se encuentra inactivo', 403);
+                return responseError('user is not active', 403);
             }
             return responseSuccess('Authenticated user.', [
                 'token' => $token,

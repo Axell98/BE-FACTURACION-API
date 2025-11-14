@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('empresas', function (Blueprint $table) {
-            $table->id();
-            $table->string('ruc', 25)->nullable();
+            $table->string('id', '3')->primary();
             $table->string('razon_social', 250);
             $table->string('nombre_comercial', 250)->nullable();
+            $table->string('ruc', 25)->nullable();
             $table->string('telefono', 50)->nullable();
             $table->string('celular', 50)->nullable();
             $table->string('email', 120)->nullable();
@@ -45,7 +45,7 @@ return new class extends Migration
         });
 
         Schema::create('empresas_usuario', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_empresa')->nullable(false);
+            $table->string('id_empresa', '3')->nullable(false);
             $table->unsignedBigInteger('id_usuario')->nullable(false);
             $table->boolean('default')->nullable();
             $table->primary(['id_empresa', 'id_usuario']);

@@ -17,13 +17,12 @@ return new class extends Migration
         });
 
         Schema::create('datos_det', function (Blueprint $table) {
-            $table->string('id_cab', '3');
-            $table->string('id_det', '5');
+            $table->string('id_cab', '3')->nullable(false);
+            $table->string('id_det', '5')->nullable(false);
             $table->string('descripcion', 250)->nullable(false);
             $table->integer('orden')->nullable();
             $table->boolean('activo')->default(true);
             $table->primary(['id_cab', 'id_det']);
-            $table->foreign('id_cab')->references('id')->on('datos_cab')->onUpdate('cascade')->onDelete('cascade');
             $table->engine('InnoDB');
         });
     }
@@ -33,6 +32,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('datos_det');
+        Schema::dropIfExists('datos_cab');
     }
 };

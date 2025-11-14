@@ -2,26 +2,27 @@
 
 namespace App\Http\Controllers\Configuracion;
 
+use App\Enums\DataSistemaEnum;
 use App\Http\Controllers\Controller;
-use App\Models\DatosSistema;
-use App\Models\TipoDocumento;
-use App\Models\TipoComprobante;
+use App\Models\DatosDet;
+use App\Models\DatosUbigeo;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
 class DatosSistemaController extends Controller
 {
 
-    public function documentos()
+    public function index()
     {
-        $data = TipoDocumento::all();
-        return responseSuccess('Data found', $data);
-    }
-
-    public function comprobantes()
-    {
-        $data = TipoComprobante::where('activo', true)->get()->toArray();
-        return responseSuccess('Data found', $data);
+        $data = DatosDet::select('id_det as id', 'id_cab', 'descripcion')
+            ->where('activo', true)
+            ->orderBy('orden')
+            ->get()->groupBy('id_cab');
+        $response = [];
+        foreach (DataSistemaEnum::cases() as $categorias) {
+            $response[$categorias->label()] = $data[$categorias->value] ?? [];
+        };
+        return responseSuccess('Data found', $response);
     }
 
     public function ubigeo(Request $request)
@@ -32,13 +33,13 @@ class DatosSistemaController extends Controller
             'agrupar'      => 'sometimes|nullable|string|in:true,false'
         ]);
         $params['agrupar'] = isset($params['agrupar']) ? $params['agrupar'] == 'true' : false;
-        $data = DatosSistema::getUbigeo($params);
+        $data = DatosUbigeo::getUbigeo($params);
         return responseSuccess('Data found', $data);
     }
 
     public function paises()
     {
-        $data = DatosSistema::getPaises();
+        $data = DatosUbigeo::getPaises();
         return responseSuccess('Data found', $data);
     }
 
