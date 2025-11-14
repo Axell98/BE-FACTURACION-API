@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\DatosEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -48,7 +49,7 @@ class Cliente extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    public static function listClientes(array $params)
+    public static function listarClientes(array $params)
     {
         $query = self::query()
             ->select([
@@ -57,7 +58,7 @@ class Cliente extends Model
                 'clientes.razon_social',
                 'clientes.nombre_comercial',
                 'clientes.tipo_doc',
-                't.descripcion as tipo_doc_des',
+                'dd.descripcion as tipo_doc_des',
                 'clientes.nume_doc',
                 'clientes.ruc',
                 'clientes.telefono',
@@ -71,12 +72,15 @@ class Cliente extends Model
                 'clientes.created_by',
                 'clientes.created_at'
             ])
-            ->leftJoin('tipos_documento as t', 't.id', '=', 'clientes.tipo_doc')
             ->leftJoin('distritos as d', 'd.id', '=', 'clientes.ubigeo')
             ->leftJoin('provincias as p', 'p.id', '=', 'd.provincia_id')
             ->leftJoin('departamentos as e', 'e.id', '=', 'd.departamento_id')
+            ->leftJoin('datos_det as dd', function ($join) {
+                $join->on('dd.id_det', '=', 'clientes.tipo_doc')
+                    ->where('dd.id_cab', DatosEnum::TIPOS_DOCUMENTOS_IDENTIDAD->value);
+            })
             ->orderByDesc('clientes.created_at');
         $result = $query->get();
-        return $result;
+        return $result->toArray();
     }
 }

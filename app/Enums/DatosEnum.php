@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum DataSistemaEnum: string
+enum DatosEnum: string
 {
     case TIPOS_COMPROBANTES = '001';
     case TIPOS_DOCUMENTOS_IDENTIDAD = '002';

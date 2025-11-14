@@ -15,7 +15,7 @@ class ClientesController extends Controller
         $params = $request->validate([
             'empresa' => 'sometimes|nullable|integer'
         ]);
-        $data = Cliente::listClientes($params);
+        $data = Cliente::listarClientes($params);
         $message = !empty($data) ? 'Data found' : 'Data not found';
         return responseSuccess($message, $data);
     }

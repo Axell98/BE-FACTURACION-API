@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Configuracion;
 
-use App\Enums\DataSistemaEnum;
+use App\Enums\DatosEnum;
 use App\Http\Controllers\Controller;
 use App\Models\DatosDet;
 use App\Models\DatosUbigeo;
@@ -19,7 +19,7 @@ class DatosSistemaController extends Controller
             ->orderBy('orden')
             ->get()->groupBy('id_cab');
         $response = [];
-        foreach (DataSistemaEnum::cases() as $categorias) {
+        foreach (DatosEnum::cases() as $categorias) {
             $response[$categorias->label()] = $data[$categorias->value] ?? [];
         };
         return responseSuccess('Data found', $response);
