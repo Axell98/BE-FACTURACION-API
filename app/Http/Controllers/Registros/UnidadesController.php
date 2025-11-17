@@ -18,9 +18,9 @@ class UnidadesController extends Controller
     public function store(Request $request)
     {
         $body = $request->validate([
-            'codigo_sunat' => 'required|string',
-            'descripcion'  => 'required|string',
-            'activo'       => 'sometimes|nullable|boolean'
+            'codigo'      => 'required|string',
+            'descripcion' => 'required|string',
+            'activo'      => 'sometimes|nullable|boolean'
         ]);
         UnidadesMedida::create($body);
         return responseSuccess('Created data');
@@ -29,10 +29,10 @@ class UnidadesController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'codigo_sunat' => 'required|string',
-            'descripcion'  => 'required|string',
-            'simbolo'      => 'sometimes|nullable|string',
-            'activo'       => 'sometimes|nullable|boolean'
+            'codigo'      => 'required|string',
+            'descripcion' => 'required|string',
+            'simbolo'     => 'sometimes|nullable|string',
+            'activo'      => 'sometimes|nullable|boolean'
         ]);
         UnidadesMedida::where('id', $id)->update([
             'descripcion' => $request->input('descripcion'),

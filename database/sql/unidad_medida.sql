@@ -2,7 +2,7 @@
 
 DELETE FROM unidades_medida;
 
-INSERT INTO unidades_medida (codigo_sunat, descripcion, simbolo) VALUES 
+INSERT INTO unidades_medida (codigo, descripcion, simbolo) VALUES 
 ('ZZ', 'Servicio', 'SERV'),
 ('BX', 'Caja', 'CAJ'),
 ('GLL', 'Galon', 'GL'),

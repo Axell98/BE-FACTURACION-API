@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('unidades_medida', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo_sunat', 5)->unique();
+            $table->string('codigo', 5)->unique();
             $table->string('descripcion', 150)->nullable(false);
             $table->string('simbolo', 20)->nullable();
             $table->boolean('activo')->default(true);

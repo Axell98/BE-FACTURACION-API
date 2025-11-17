@@ -10,7 +10,7 @@ class UnidadesMedida extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'id',
-        'codigo_sunat',
+        'codigo',
         'descripcion',
         'simbolo',
         'activo',
