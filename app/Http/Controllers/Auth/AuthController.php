@@ -28,6 +28,7 @@ class AuthController extends Controller
             }
             return responseSuccess('Authenticated user.', [
                 'token' => $token,
+                'refreshToken' => $token,
                 'expiresIn' => $expirationDate,
                 'userData' => $userData
             ]);

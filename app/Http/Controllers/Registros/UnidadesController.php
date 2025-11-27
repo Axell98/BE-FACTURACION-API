@@ -8,36 +8,43 @@ use Illuminate\Http\Request;
 
 class UnidadesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = UnidadesMedida::where('activo', true)->orderBy('descripcion')->get()->toArray();
+        $params = $request->validate([
+            'activos' => 'sometimes|nullable|string|in:true'
+        ]);
+        $filter = [true, false];
+        if (!empty($params)) unset($filter[1]);
+        $data = UnidadesMedida::whereIn('activo', $filter)->orderBy('descripcion')->get()->toArray();
         $message = !empty($data) ? 'Data found' : 'Data not found';
         return responseSuccess($message, $data);
     }
 
     public function store(Request $request)
     {
-        $body = $request->validate([
+        $data = $request->validate([
             'codigo'      => 'required|string',
             'descripcion' => 'required|string',
             'activo'      => 'sometimes|nullable|boolean'
         ]);
-        UnidadesMedida::create($body);
+        if (UnidadesMedida::where('codigo', $data['codigo'])->exists()) {
+            return responseError("Ya existe un registro con el mismo código", 409);
+        }
+        UnidadesMedida::create($data);
         return responseSuccess('Created data');
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $params = $request->validate([
             'codigo'      => 'required|string',
             'descripcion' => 'required|string',
             'simbolo'     => 'sometimes|nullable|string',
             'activo'      => 'sometimes|nullable|boolean'
         ]);
-        UnidadesMedida::where('id', $id)->update([
-            'descripcion' => $request->input('descripcion'),
-            'simbolo' => $request->input('simbolo'),
-            'activo' => $request->input('activo', true)
+        UnidadesMedida::where(['id' => $id])->update([
+            'descripcion' => $params['descripcion'],
+            'activo' => $params['activo']
         ]);
         return responseSuccess('Updated data');
     }

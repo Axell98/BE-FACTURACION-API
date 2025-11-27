@@ -30,7 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
         });
         $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException $e, Request $request) {
             if ($request->is('api/*')) {
-                return responseError('Unauthorized.', Response::HTTP_UNAUTHORIZED);
+                return responseError('Unauthorized user.', Response::HTTP_UNAUTHORIZED);
             }
         });
         $exceptions->render(function (\Spatie\Permission\Exceptions\UnauthorizedException $e, Request $request) {
@@ -40,7 +40,7 @@ return Application::configure(basePath: dirname(__DIR__))
         });
         $exceptions->render(function (ValidationException $e, Request $request) {
             if ($request->is('api/*')) {
-                return responseError($e->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY, $e->errors());
+                return responseError('Validation errors.', Response::HTTP_UNPROCESSABLE_ENTITY, $e->errors());
             }
         });
         $exceptions->render(function (\Illuminate\Database\QueryException $e, Request $request) {

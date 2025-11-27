@@ -9,7 +9,6 @@ class UnidadesMedida extends Model
     protected $table = 'unidades_medida';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'id',
         'codigo',
         'descripcion',
         'simbolo',

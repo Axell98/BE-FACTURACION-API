@@ -16,24 +16,24 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'          => $this->id,
-            'usuario'     => $this->usuario,
-            'nombres'     => $this->nombres,
-            'apellidos'   => $this->apellidos,
-            'nombcomp'    => trim($this->nombres . ' ' . $this->apellidos),
-            'tipo_doc'    => $this->tipo_doc,
-            'nume_doc'    => $this->nume_doc,
-            'fecha_nac'   => $this->fecha_nac,
-            'celular'     => $this->celular,
-            'email'       => $this->email,
-            'direccion'   => $this->direccion,
-            'foto_url'    => !empty($this->foto_url) ? env('APP_URL') . $this->foto_url : null,
-            'activo'      => (bool) $this->activo,
-            'roles'       => $this->roles->isNotEmpty() ? $this->roles->first()->only(['id', 'name', 'display_name']) : null,
-            'empresas'    => EmpresaUsuario::getEmpresaUsuario($this->id),
+            'id'         => $this->id,
+            'usuario'    => $this->usuario,
+            'nombres'    => $this->nombres,
+            'apellidos'  => $this->apellidos,
+            'fullname'   => trim($this->nombres . ' ' . $this->apellidos),
+            'tipoDoc'    => $this->tipo_doc,
+            'numeDoc'    => $this->nume_doc,
+            'fechaNac'   => $this->fecha_nac,
+            'celular'    => $this->celular,
+            'email'      => $this->email,
+            'direccion'  => $this->direccion,
+            'fotoUrl'    => !empty($this->foto_url) ? config('app.url') . $this->foto_url : null,
+            'activo'     => (bool) $this->activo,
+            'roles'      => $this->roles->isNotEmpty() ? $this->roles->first()->only(['id', 'name', 'display_name']) : null,
+            'empresas'   => EmpresaUsuario::getEmpresaUsuario($this->id),
             // 'permissions' => $this->getAllPermissions()->pluck('name'),
-            'created_at'  => $this->created_at->format('Y-m-d H:i:s'),
-            'updated_at'  => $this->updated_at->format('Y-m-d H:i:s')
+            'createdAt'  => $this->created_at->format('Y-m-d H:i:s'),
+            'updatedAt'  => $this->updated_at->format('Y-m-d H:i:s')
         ];
     }
 }
