@@ -7,30 +7,29 @@ use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenExpiredException;
 
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
         try {
-            $credentials = $request->validate([
-                'usuario'  => 'required|string|max:10',
-                'password' => 'required|string',
+            $request->validate([
+                'usuario'  => 'required|string|max:12',
+                'password' => 'required|string|min:5',
             ]);
+            $credentials = $request->only(['usuario', 'password']);
             if (!$token = JWTAuth::attempt($credentials)) {
                 return responseError('Incorrect username or password.', 401);
             }
-            $expiresIn = JWTAuth::factory()->getTTL();
-            $expirationDate = now()->addMinutes($expiresIn)->timestamp;
             $userData = new UserResource(JWTAuth::user());
             if (!$userData->activo) {
                 return responseError('user is not active', 403);
             }
             return responseSuccess('Authenticated user.', [
-                'token' => $token,
-                'refreshToken' => $token,
-                'expiresIn' => $expirationDate,
-                'userData' => $userData
+                'token'     => $token,
+                'expiresIn' => $this->getExpirationDate(),
+                'userData'  => $userData
             ]);
         } catch (JWTException $ex) {
             return responseError('Could not create token.', 500, $ex->getMessage());
@@ -40,17 +39,16 @@ class AuthController extends Controller
     public function refresh()
     {
         try {
-            $token = JWTAuth::getToken();
-            if (!$token) {
+            if (!$token = JWTAuth::getToken()) {
                 return responseError('No token provided.', 401);
             }
             $newToken = JWTAuth::refresh($token);
-            $expiresIn = JWTAuth::factory()->getTTL();
-            $expirationDate = now()->addMinutes($expiresIn)->timestamp;
             return responseSuccess('Token refreshed.', [
                 'token' => $newToken,
-                'expiresIn'   => $expirationDate,
+                'expiresIn'   => $this->getExpirationDate(),
             ]);
+        } catch (TokenExpiredException $ex) {
+            return responseError('The token has expired.', 401, $ex->getMessage());
         } catch (JWTException $ex) {
             return responseError('Could not refresh token.', 500, $ex->getMessage());
         }
@@ -83,5 +81,12 @@ class AuthController extends Controller
         } catch (JWTException $ex) {
             return responseError('Failed to invalidate token.', 500, $ex->getMessage());
         }
+    }
+
+    private function getExpirationDate()
+    {
+        $expiresIn = JWTAuth::factory()->getTTL();
+        $expirationDate = now()->addMinutes($expiresIn)->timestamp;
+        return $expirationDate;
     }
 }
