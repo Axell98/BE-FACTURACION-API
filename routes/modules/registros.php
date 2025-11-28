@@ -10,6 +10,13 @@ Route::prefix('clientes')->group(function () {
     Route::delete('{id}', [Registros\ClientesController::class, 'remove'])->middleware('permission:clientes.delete')->whereNumber('id');
 });
 
+Route::prefix('proveedores')->group(function () {
+    Route::get('', [Registros\ProveedoresController::class, 'index'])->middleware('permission:clientes.view');
+    Route::post('', [Registros\ProveedoresController::class, 'store'])->middleware('permission:clientes.create');
+    Route::put('{id}', [Registros\ProveedoresController::class, 'update'])->middleware('permission:clientes.edit')->whereNumber('id');
+    Route::delete('{id}', [Registros\ProveedoresController::class, 'remove'])->middleware('permission:clientes.delete')->whereNumber('id');
+});
+
 Route::prefix('categorias')->group(function () {
     Route::get('', [Registros\CategoriasController::class, 'index'])->middleware('permission:categorias.view');
     Route::post('', [Registros\CategoriasController::class, 'store'])->middleware('permission:categorias.create');
