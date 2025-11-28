@@ -13,6 +13,8 @@ Route::prefix('clientes')->group(function () {
 Route::prefix('proveedores')->group(function () {
     Route::get('', [Registros\ProveedoresController::class, 'index'])->middleware('permission:clientes.view');
     Route::post('', [Registros\ProveedoresController::class, 'store'])->middleware('permission:clientes.create');
+    Route::post('importar', [Registros\ProveedoresController::class, 'importData']);
+    Route::get('exportar', [Registros\ProveedoresController::class, 'exportData']);
     Route::put('{id}', [Registros\ProveedoresController::class, 'update'])->middleware('permission:clientes.edit')->whereNumber('id');
     Route::delete('{id}', [Registros\ProveedoresController::class, 'remove'])->middleware('permission:clientes.delete')->whereNumber('id');
 });

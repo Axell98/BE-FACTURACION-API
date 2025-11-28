@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Registros;
 
+use App\Exports\ProveedorExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProveedorRequest;
+use App\Imports\ProveedorImport;
 use App\Models\Proveedor;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class ProveedoresController extends Controller
@@ -46,5 +49,28 @@ class ProveedoresController extends Controller
             return responseSuccess('Successfully deleted data');
         }
         return responseError("No existe un cliente con el id [$id]", 404);
+    }
+
+    public function importData(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,xls,csv|max:10240'
+        ]);
+        try {
+            Excel::import(new ProveedorImport, $request->file('file'));
+            return responseSuccess('Datos importados correctamente.');
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $errors = $e->failures();
+            return responseError('Errores de validación encontrados.', 422, $errors);
+        }
+    }
+
+    public function exportData(Request $request)
+    {
+        $params = $request->validate([
+            'format' => 'required|string|in:xlsx,xls,csv'
+        ]);
+        $fileName = 'proveedores_' . now()->format('Ymd_His') . '.' . $params['format'];
+        return Excel::download(new ProveedorExport, $fileName);
     }
 }
