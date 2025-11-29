@@ -16,7 +16,6 @@ if (!function_exists('responseError')) {
     {
         return response()->json([
             'status'  => false,
-            'statusCode' => $code,
             'message' => $message,
             'errors'  => $errors,
         ], $code);

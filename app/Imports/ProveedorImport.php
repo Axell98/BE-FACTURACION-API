@@ -11,23 +11,22 @@ use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class ProveedorImport implements ToCollection, WithHeadingRow, WithChunkReading
 {
-    /**
-     * @param array $row
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
+
+    private $rowsCount = 0;
+
     public function collection(Collection $rows)
     {
+        $this->rowsCount += $rows->count();
         $dataToInsert = $rows->map(function ($row) {
             return [
-                'codigo_int' => $row['codigo_int'] ?? null,
-                'razon_social' => $row['razon_social'],
+                'codigo_int'       => $row['codigo_int'] ?? null,
+                'razon_social'     => $row['razon_social'],
                 'nombre_comercial' => $row['nombre_comercial'] ?? null,
-                'tipo_doc' => $row['tipo_doc'],
-                'nume_doc' => $row['nume_doc'],
-                'empresa' => $row['empresa'],
-                'created_by' => JWTAuth::user()->usuario,
-                'created_at' => now()
+                'tipo_doc'         => $row['tipo_doc'],
+                'nume_doc'         => $row['nume_doc'],
+                'empresa'          => $row['empresa'],
+                'created_by'       => JWTAuth::user()->usuario,
+                'created_at'       => now()
             ];
         })->toArray();
         Proveedor::insert($dataToInsert);
@@ -40,6 +39,11 @@ class ProveedorImport implements ToCollection, WithHeadingRow, WithChunkReading
 
     public function chunkSize(): int
     {
-        return 500; // Puedes ajustar este valor
+        return 500;
+    }
+
+    public function getRowCount(): int
+    {
+        return $this->rowsCount;
     }
 }

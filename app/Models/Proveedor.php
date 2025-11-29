@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\DatosEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Proveedor extends Model
 {
@@ -50,8 +52,18 @@ class Proveedor extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    public function listarProveedores(array $params)
+    public static function listarProveedores(array $params = [])
     {
-        $query = self::select();
+        $query = self::select([
+            'proveedores.*',
+            'dd.descripcion as tipo_doc_des',
+            DB::raw("fun_get_ubigeo_descripcion(proveedores.ubigeo) as ubigeo_des")
+        ])
+            ->leftJoin('datos_det as dd', function ($join) {
+                $join->on('dd.id_det', '=', 'proveedores.tipo_doc')
+                    ->where('dd.id_cab', DatosEnum::TIPOS_DOCUMENTOS_IDENTIDAD->value);
+            });
+        $result = $query->get();
+        return $result;
     }
 }

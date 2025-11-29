@@ -3,30 +3,32 @@
 use App\Http\Controllers\Configuracion;
 use Illuminate\Support\Facades\Route;
 
+// middleware('permission:sucursal.view')
+
 Route::prefix('roles')->group(function () {
-    Route::get('', [Configuracion\RoleController::class, 'index'])->middleware('permission:role.view');
-    Route::get('{id}', [Configuracion\RoleController::class, 'search'])->whereNumber('id')->middleware('permission:role.view');
-    Route::post('', [Configuracion\RoleController::class, 'store'])->middleware('permission:role.create');
-    Route::put('{id}', [Configuracion\RoleController::class, 'update'])->whereNumber('id')->middleware('permission:role.edit');
-    Route::delete('{id}', [Configuracion\RoleController::class, 'remove'])->whereNumber('id')->middleware('permission:role.delete');
+    Route::get('', [Configuracion\RoleController::class, 'index']);
+    Route::get('{id}', [Configuracion\RoleController::class, 'search'])->whereNumber('id');
+    Route::post('', [Configuracion\RoleController::class, 'store']);
+    Route::put('{id}', [Configuracion\RoleController::class, 'update'])->whereNumber('id');
+    Route::delete('{id}', [Configuracion\RoleController::class, 'remove'])->whereNumber('id');
 });
 
 Route::prefix('empresa')->group(function () {
-    Route::get('', [Configuracion\EmpresaController::class, 'index'])->middleware('permission:empresa.view');
-    Route::post('', [Configuracion\EmpresaController::class, 'store'])->middleware('permission:empresa.create');
+    Route::get('', [Configuracion\EmpresaController::class, 'index']);
+    Route::post('', [Configuracion\EmpresaController::class, 'store']);
 });
 
 Route::prefix('sucursales')->group(function () {
-    Route::get('', [Configuracion\SucursalController::class, 'index'])->middleware('permission:sucursal.view');
+    Route::get('', [Configuracion\SucursalController::class, 'index']);
 });
 
 Route::prefix('usuarios')->group(function () {
-    Route::get('', [Configuracion\UsuarioController::class, 'index'])->middleware('permission:usuario.view');
-    Route::post('', [Configuracion\UsuarioController::class, 'store'])->middleware('permission:usuario.create');
-    Route::post('upload-foto', [Configuracion\UsuarioController::class, 'photoUpload'])->middleware('permission:usuario.create');
-    Route::put('update-password/{id}', [Configuracion\UsuarioController::class, 'updatePassword'])->whereNumber('id')->middleware('permission:usuario.create');
-    Route::put('{id}', [Configuracion\UsuarioController::class, 'update'])->whereNumber('id')->middleware('permission:usuario.edit');
-    Route::delete('{id}', [Configuracion\UsuarioController::class, 'remove'])->whereNumber('id')->middleware('permission:usuario.delete');
+    Route::get('', [Configuracion\UsuarioController::class, 'index']);
+    Route::post('', [Configuracion\UsuarioController::class, 'store']);
+    Route::post('upload-foto', [Configuracion\UsuarioController::class, 'photoUpload']);
+    Route::put('update-password/{id}', [Configuracion\UsuarioController::class, 'updatePassword'])->whereNumber('id');
+    Route::put('{id}', [Configuracion\UsuarioController::class, 'update'])->whereNumber('id');
+    Route::delete('{id}', [Configuracion\UsuarioController::class, 'remove'])->whereNumber('id');
 });
 
 Route::prefix('sistema')->group(function () {

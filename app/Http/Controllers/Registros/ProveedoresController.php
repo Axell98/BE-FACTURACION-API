@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Registros;
 use App\Exports\ProveedorExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProveedorRequest;
+use App\Http\Resources\ProveedorResource;
 use App\Imports\ProveedorImport;
 use App\Models\Proveedor;
 use Illuminate\Http\Request;
@@ -15,10 +16,12 @@ class ProveedoresController extends Controller
 {
     public function index(Request $request)
     {
-        $params = $request->validate([]);
-        $data = Proveedor::all();
-        $message = !empty($data) ? 'Data found' : 'Data not found';
-        return responseSuccess($message, $data);
+        $params = $request->validate([
+            'empresa' => 'sometimes|nullable|integer|min:1'
+        ]);
+        $data = Proveedor::listarProveedores($params);
+        $message = $data->isEmpty() ? 'Data found' : 'Data not found';
+        return responseSuccess($message, ProveedorResource::collection($data));
     }
 
     public function store(ProveedorRequest $request)
@@ -57,8 +60,12 @@ class ProveedoresController extends Controller
             'file' => 'required|file|mimes:xlsx,xls,csv|max:10240'
         ]);
         try {
-            Excel::import(new ProveedorImport, $request->file('file'));
-            return responseSuccess('Datos importados correctamente.');
+            $importClass = new ProveedorImport;
+            Excel::import($importClass, $request->file('file'));
+            $insertRows = $importClass->getRowCount();
+            return responseSuccess('Datos importados correctamente.', [
+                'totalImportados' => $insertRows
+            ]);
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $errors = $e->failures();
             return responseError('Errores de validación encontrados.', 422, $errors);
