@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Registros;
 use App\Models\Cliente;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClienteRequest;
+use App\Http\Resources\ClienteResource;
 use Illuminate\Http\Request;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
@@ -15,24 +16,24 @@ class ClientesController extends Controller
         $params = $request->validate([
             'empresa' => 'sometimes|nullable|integer'
         ]);
-        $data = Cliente::listarClientes($params);
-        $message = !empty($data) ? 'Data found' : 'Data not found';
-        return responseSuccess($message, $data);
+        $data = Cliente::listClientes($params);
+        $message = $data->isEmpty() ? 'Data not found' : 'Data found';
+        return responseSuccess($message, ClienteResource::collection($data));
     }
 
     public function store(ClienteRequest $request)
     {
-        $bodyReq = $request->validated();
-        $bodyReq['created_by'] = JWTAuth::user()->usuario;
-        Cliente::create($bodyReq);
+        $data = $request->validated();
+        $data['created_by'] = JWTAuth::user()->usuario;
+        Cliente::create($data);
         return responseSuccess('Successfully created data', [], 201);
     }
 
     public function update(ClienteRequest $request, $id)
     {
-        $bodyReq = $request->validated();
-        $bodyReq['updated_by'] = JWTAuth::user()->usuario;
-        Cliente::where('id', $id)->update($bodyReq);
+        $data = $request->validated();
+        $data['updated_by'] = JWTAuth::user()->usuario;
+        Cliente::where('id', $id)->update($data);
         return responseSuccess('Successfully updated data');
     }
 

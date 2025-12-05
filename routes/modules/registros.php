@@ -28,6 +28,13 @@ Route::prefix('categorias')->group(function () {
     Route::delete('{id}', [Registros\CategoriasController::class, 'remove'])->whereNumber('id');
 });
 
+Route::prefix('marcas')->group(function () {
+    Route::get('', [Registros\MarcasController::class, 'index']);
+    Route::post('', [Registros\MarcasController::class, 'store']);
+    Route::put('{id}', [Registros\MarcasController::class, 'update'])->whereNumber('id');
+    Route::delete('{id}', [Registros\MarcasController::class, 'remove'])->whereNumber('id');
+});
+
 Route::prefix('unidades')->group(function () {
     Route::get('', [Registros\UnidadesController::class, 'index']);
     Route::post('', [Registros\UnidadesController::class, 'store']);

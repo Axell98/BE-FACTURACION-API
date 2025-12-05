@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Registros;
 
+use App\Models\Proveedor;
+use App\Imports\ProveedorImport;
 use App\Exports\ProveedorExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProveedorRequest;
 use App\Http\Resources\ProveedorResource;
-use App\Imports\ProveedorImport;
-use App\Models\Proveedor;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
@@ -19,8 +19,8 @@ class ProveedoresController extends Controller
         $params = $request->validate([
             'empresa' => 'sometimes|nullable|integer|min:1'
         ]);
-        $data = Proveedor::listarProveedores($params);
-        $message = $data->isEmpty() ? 'Data found' : 'Data not found';
+        $data = Proveedor::listProveedores($params);
+        $message = $data->isEmpty() ? 'Data not found' : 'Data found';
         return responseSuccess($message, ProveedorResource::collection($data));
     }
 

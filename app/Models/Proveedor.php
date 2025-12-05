@@ -52,7 +52,7 @@ class Proveedor extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    public static function listarProveedores(array $params = [])
+    public static function listProveedores(array $params = [])
     {
         $query = self::select([
             'proveedores.*',
@@ -62,7 +62,8 @@ class Proveedor extends Model
             ->leftJoin('datos_det as dd', function ($join) {
                 $join->on('dd.id_det', '=', 'proveedores.tipo_doc')
                     ->where('dd.id_cab', DatosEnum::TIPOS_DOCUMENTOS_IDENTIDAD->value);
-            });
+            })
+            ->orderByDesc('proveedores.created_at');
         $result = $query->get();
         return $result;
     }

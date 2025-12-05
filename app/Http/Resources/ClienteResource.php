@@ -32,6 +32,7 @@ class ClienteResource extends JsonResource
             'empresa' => $this->empresa,
             'web' => $this->web,
             'agenteRetencion' => $this->agente_retencion,
+            'cuentaDetraccion' => $this->cuenta_detraccion,
             'activo' => $this->activo,
             'createdBy' => $this->created_by,
             'createdAt' => $this->created_at ? $this->created_at->format('Y-m-d H:i:s') : null,

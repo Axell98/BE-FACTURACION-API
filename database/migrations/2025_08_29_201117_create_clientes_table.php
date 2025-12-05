@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('ubigeo', 6)->nullable();
             $table->string('contacto', 250)->nullable();
             $table->string('web', 250)->nullable();
+            $table->boolean('agente_retencion')->nullable()->default(false);
             $table->string('cuenta_detraccion', 250)->nullable();
             $table->integer('empresa')->default(1);
             $table->boolean('activo')->default(true);
