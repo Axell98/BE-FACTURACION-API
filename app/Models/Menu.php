@@ -50,11 +50,11 @@ class Menu extends Model
             'm.url',
             'm.icono',
             'm.orden',
-			DB::raw("false as activo")
+            DB::raw("false as activo")
         ])
             ->from('menus as m')
             ->whereRaw('m.activo = true');
-        if (!is_super_admin()) {
+        if (!isSuperAdmin()) {
             $query->where(function ($q) use ($permissions) {
                 $q->whereIn('m.permission_name', $permissions)
                     ->orWhereIn('m.id', function ($subQuery) use ($permissions) {

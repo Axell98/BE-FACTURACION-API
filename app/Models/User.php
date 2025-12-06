@@ -80,7 +80,9 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims()
     {
-        return [];
+        return [
+            'estado' => $this->activo,
+        ];
     }
 
     public function role()

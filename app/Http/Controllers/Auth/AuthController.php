@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenExpiredException;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenBlacklistedException;
 
 class AuthController extends Controller
 {
@@ -28,7 +29,7 @@ class AuthController extends Controller
             }
             return responseSuccess('Authenticated user.', [
                 'token'     => $token,
-                'expiresIn' => $this->getExpirationDate(),
+                'expiresIn' => $this->getExpirationDate($token),
                 'userData'  => $userData
             ]);
         } catch (JWTException $ex) {
@@ -39,18 +40,18 @@ class AuthController extends Controller
     public function refresh()
     {
         try {
-            if (!$token = JWTAuth::getToken()) {
-                return responseError('No token provided.', 401);
-            }
-            $newToken = JWTAuth::refresh($token);
+            if (!JWTAuth::getToken()) return responseError('No token provided.', 401);
+            $newToken = auth('api')->refresh();
             return responseSuccess('Token refreshed.', [
                 'token' => $newToken,
-                'expiresIn'   => $this->getExpirationDate(),
+                'expiresIn'   => $this->getExpirationDate($newToken),
             ]);
+        } catch (TokenBlacklistedException $ex) {
+            return responseError('The token has been blacklisted.', 401, $ex->getMessage());
         } catch (TokenExpiredException $ex) {
             return responseError('The token has expired.', 401, $ex->getMessage());
         } catch (JWTException $ex) {
-            return responseError('Could not refresh token.', 500, $ex->getMessage());
+            return responseError('Could not refresh token.', 401, $ex->getMessage());
         }
     }
 
@@ -66,27 +67,27 @@ class AuthController extends Controller
             }
             return responseSuccess('User data found.', $userData);
         } catch (JWTException $ex) {
-            return responseError('Invalid token.', 500, $ex->getMessage());
+            return responseError('Invalid token.', 401, $ex->getMessage());
         }
     }
 
     public function logout()
     {
         try {
-            if (!$token = JWTAuth::getToken()) {
-                return responseError('No token provided.', 401);
-            }
+            if (!$token = JWTAuth::getToken()) return responseError('No token provided.', 401);
             JWTAuth::invalidate($token);
             return responseSuccess('Successfully logged out.');
+        } catch (TokenExpiredException $ex) {
+            return responseSuccess('Successfully logged out (Token was already expired).');
+        } catch (TokenBlacklistedException $ex) {
+            return responseSuccess('Successfully logged out.');
         } catch (JWTException $ex) {
-            return responseError('Failed to invalidate token.', 500, $ex->getMessage());
+            return responseError('Failed to logout, invalid token format.', 500, $ex->getMessage());
         }
     }
 
-    private function getExpirationDate()
+    private function getExpirationDate(string $token)
     {
-        $expiresIn = JWTAuth::factory()->getTTL();
-        $expirationDate = now()->addMinutes($expiresIn)->timestamp;
-        return $expirationDate;
+        return JWTAuth::setToken($token)->getPayload()->get('exp');
     }
 }
