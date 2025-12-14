@@ -12,7 +12,7 @@ class MenuController extends Controller
 
     public function index()
     {
-        $data = []; #Menu::menuPermisos(3);
+        $data = Menu::menuPermisos(3);
         $message = !empty($data) ? 'Data found' : 'Data not found';
         return responseSuccess($message, $data);
     }

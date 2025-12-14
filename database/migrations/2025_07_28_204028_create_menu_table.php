@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('icono', 100)->nullable();
             $table->boolean('activo')->default(true)->nullable();
             $table->integer('orden')->nullable();
-            $table->string('permission_name')->nullable();
             $table->engine('InnoDB');
         });
     }

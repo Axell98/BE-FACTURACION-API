@@ -11,7 +11,7 @@ class CategoriasController extends Controller
 {
     public function index(Request $request)
     {
-        $data = Categoria::select('id', 'descripcion', 'activo', 'created_by', 'created_at')->orderBy('descripcion')->get()->toArray();
+        $data = Categoria::select('id', 'nombre', 'descripcion', 'activo', 'created_by', 'created_at')->orderBy('nombre')->get()->toArray();
         $message = !empty($data) ? 'Data found' : 'Data not found';
         return responseSuccess($message, $data);
     }
@@ -19,8 +19,9 @@ class CategoriasController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'descripcion' => 'required|string',
-            'activo' => 'required|boolean',
+            'nombre' => 'required|string',
+            'descripcion' => 'sometimes|nullable|string',
+            'activo' => 'sometimes|nullable|boolean',
         ]);
         $data['created_by'] = JWTAuth::user()->usuario;
         Categoria::create($data);
@@ -31,13 +32,15 @@ class CategoriasController extends Controller
     {
         $data = $request->validate([
             'nombre' => 'required|string',
-            'activo' => 'required|boolean'
+            'descripcion' => 'sometimes|nullable|string',
+            'activo' => 'sometimes|nullable|boolean'
         ]);
         Categoria::where('id', $id)->update($data);
         return responseSuccess('Successfully created data');
     }
 
-    public function remove($id) {
+    public function remove($id)
+    {
         Categoria::where('id', $id)->remove();
     }
 }

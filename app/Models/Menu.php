@@ -26,17 +26,12 @@ class Menu extends Model
             'm.id_pad',
             'm.nombre',
             'm.orden',
-            'm.permission_name',
             DB::raw("(select 1 from menus_role mr where mr.id_menu as m.id and mr.id_role = $role) as activado")
         ])
             ->from('menus as m')
             ->whereRaw('m.activo = true')
             ->orderBy('m.orden');
-        die($query->toRawSql());
-        $result = $query->get();
-        foreach ($result as $value) {
-        }
-        // $result = self::reformatMenu($query->get());
+        $result = self::reformatMenu($query->get());
         $result = $query->get();
         return $result;
     }
